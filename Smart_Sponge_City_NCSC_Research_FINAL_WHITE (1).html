@@ -1,0 +1,885 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Smart Sponge City | Bamrauli, Prayagraj</title>
+<style>
+:root{--bg:#071713;--panel:#0e211c;--line:#285044;--text:#f5f0df;--muted:#a9beb6;--green:#a8dfb0;--blue:#43b8e8;--gold:#e7c76b}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:linear-gradient(135deg,#06120f,#0b211b,#071713);color:var(--text);font:15px Arial,sans-serif}a{color:inherit;text-decoration:none}.wrap{width:min(1150px,92%);margin:auto}
+nav{position:sticky;top:0;z-index:9;background:#071713ee;border-bottom:1px solid var(--line);backdrop-filter:blur(10px)}.nav{display:flex;justify-content:space-between;align-items:center;padding:15px 0}.logo{font-weight:900;letter-spacing:2px}.logo i{color:var(--green);font-style:normal}.links{display:flex;gap:18px;color:var(--muted);font-size:13px}
+.hero{padding:70px 0 50px;display:grid;grid-template-columns:1.2fr .8fr;gap:30px;align-items:center}.badge{border:1px solid #3b6a59;border-radius:20px;padding:7px 11px;color:var(--green);font-size:11px;text-transform:uppercase;letter-spacing:1px}
+h1{font-size:clamp(42px,7vw,75px);line-height:.95;margin:18px 0}.green{color:var(--green)}p{line-height:1.7;color:var(--muted)}button,.btn{display:inline-block;border:0;border-radius:11px;padding:12px 16px;background:var(--green);color:#092018;font-weight:800;cursor:pointer}.alt{background:transparent;color:var(--text);border:1px solid var(--line);margin-left:7px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px}.hero-card{padding:18px}.rain{height:270px;border-radius:15px;position:relative;overflow:hidden;background:linear-gradient(#123342,#0c2721 50%,#102d20)}.cloud{position:absolute;top:20px;left:40%;font-size:60px}.drops span{position:absolute;color:#55c9ed;font-size:25px;animation:drop 2s infinite}@keyframes drop{from{transform:translateY(-30px);opacity:0}25%{opacity:1}to{transform:translateY(280px);opacity:0}}
+.flow{position:absolute;bottom:15px;left:10px;right:10px;display:flex;justify-content:space-between;gap:5px}.flow b{font-size:10px;padding:8px;border-radius:8px;background:#09221ddd;border:1px solid #356454}
+section{padding:55px 0}.title{font-size:31px;margin:0 0 8px}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}.metric{font-size:29px;font-weight:900;color:var(--green)}.small{font-size:11px;color:var(--muted)}
+.dashboard{display:grid;grid-template-columns:1fr 1fr;gap:16px}.control{margin:12px 0}.control label{display:flex;justify-content:space-between;color:var(--muted);margin-bottom:7px}input[type=range]{width:100%;accent-color:var(--green)}
+.status{display:inline-flex;gap:8px;padding:8px 12px;border-radius:20px;background:#173625;font-weight:800}.dot{width:12px;height:12px;border-radius:50%;background:#62c77a;box-shadow:0 0 12px #62c77a}.caution{background:#3c3518}.warning{background:#3b2617}.critical{background:#3a1d21}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.step{text-align:center;border:1px solid var(--line);border-radius:12px;padding:13px}.num{margin:auto;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:#254d3c;color:var(--green);font-weight:bold}
+.map{height:410px;position:relative;overflow:hidden;border:1px solid var(--line);border-radius:18px;background:#10251f}.road{position:absolute;background:#263936;border:3px dashed #d8d2b8}.r1{left:0;right:0;top:52%;height:65px}.r2{top:0;bottom:0;left:43%;width:70px}.zone{position:absolute;padding:11px;border:1px solid #548f68;border-radius:10px;background:#17392a;font-size:12px;box-shadow:0 8px 18px #0005}.b{background:#765f47}.pond{background:#14506a;border-color:#49c6ef}.recharge{background:#58482e;border-color:#d5b979}.sensor{background:#28343c;border-color:#75d2ef}.z1{left:6%;top:10%}.z2{left:55%;top:10%}.z3{left:8%;bottom:10%}.z4{right:8%;top:42%}.z5{left:50%;bottom:8%}.z6{right:7%;bottom:10%}.z7{left:34%;top:34%}.arrow{position:absolute;color:#55c9ed;font-size:27px;font-weight:bold}.a1{left:28%;top:48%}.a2{left:46%;top:62%}.a3{right:34%;top:50%}.a4{right:17%;top:62%}
+.calc{display:grid;grid-template-columns:1fr 1fr;gap:10px}.calc label{font-weight:800;color:#f5f0df}.calc input{width:100%;padding:11px;border-radius:9px;border:1px solid var(--line);background:#091a16;color:white;margin-top:5px}.result{margin-top:12px;padding:13px;background:#102d24;border-radius:10px;color:var(--green)}
+canvas{width:100%;height:260px;background:#091a16;border:1px solid var(--line);border-radius:13px}.notice{border-left:4px solid var(--gold);padding:13px;background:#211f12;color:#e9ddb0;border-radius:7px}
+.chat{height:360px;display:flex;flex-direction:column}.messages{flex:1;overflow:auto;background:#091a16;border-radius:10px;padding:10px}.msg{max-width:85%;padding:9px 11px;border-radius:10px;margin:6px 0;line-height:1.5;font-size:13px}.bot{background:#17382b}.user{background:#25465a;margin-left:auto}.chatbar{display:flex;gap:7px;margin-top:9px}.chatbar input{flex:1;padding:11px;border-radius:9px;border:1px solid var(--line);background:#091a16;color:white}
+footer{border-top:1px solid var(--line);padding:28px 0;text-align:center;color:var(--muted)}@media(max-width:800px){.hero,.dashboard{grid-template-columns:1fr}.grid{grid-template-columns:1fr 1fr}.links{display:none}}@media(max-width:520px){.grid,.steps,.calc{grid-template-columns:1fr}}
+
+/* === Animated exhibition layer: added without changing the existing sections === */
+.flow-animation{position:relative;height:245px;margin-top:16px;border:1px solid var(--line);border-radius:15px;overflow:hidden;background:linear-gradient(#102f3a 0 43%,#183b2b 43% 100%)}
+.flow-animation .rain-drop{position:absolute;top:-28px;width:2px;height:28px;background:var(--blue);opacity:.85;animation:fall 1.2s linear infinite}
+@keyframes fall{to{transform:translateY(300px);opacity:.05}}
+.flow-ground{position:absolute;left:0;right:0;bottom:0;height:57%;background:linear-gradient(#356b48,#193a2a)}
+.flow-road{position:absolute;left:0;right:0;bottom:25px;height:33px;background:#283331;border-top:2px solid #68736f}
+.flow-road:after{content:"";position:absolute;left:8%;right:8%;top:14px;border-top:2px dashed #d8c96c}
+.flow-garden{position:absolute;left:30%;bottom:27px;width:95px;height:39px;border-radius:50% 50% 8px 8px;background:#377446;border:2px solid #72ad72}
+.flow-tank{position:absolute;right:16%;bottom:27px;width:58px;height:65px;border:3px solid #8fd0e7;border-radius:7px 7px 12px 12px;background:linear-gradient(to top,#258eb2 48%,transparent 48%)}
+.flow-pond{position:absolute;right:3%;bottom:22px;width:98px;height:42px;border-radius:50%;background:#267eaa;border:3px solid #75c8df;box-shadow:inset 0 7px #42acd0}
+.flow-particle{position:absolute;width:8px;height:8px;border-radius:50%;background:#55c9ed;box-shadow:0 0 10px #55c9ed;animation:moveWater 3.5s linear infinite}
+@keyframes moveWater{0%{left:4%;bottom:76px;opacity:0}12%{opacity:1}45%{left:29%;bottom:64px}65%{left:55%;bottom:73px}85%{left:79%;bottom:56px}100%{left:94%;bottom:46px;opacity:0}}
+.flow-label{position:absolute;font-size:9px;color:#eaf7f3;background:#071713dd;border:1px solid #386354;padding:3px 6px;border-radius:8px}
+.live-pulse{display:inline-block;width:8px;height:8px;border-radius:50%;background:#73e39a;box-shadow:0 0 8px #73e39a;animation:pulseLive 1.25s infinite;margin-right:5px}
+@keyframes pulseLive{0%,100%{box-shadow:0 0 0 0 #73e39a55}50%{box-shadow:0 0 0 8px #73e39a00}}
+.status{transition:transform .35s,background .35s,box-shadow .35s}.status.flash{transform:scale(1.04);box-shadow:0 0 18px #73e39a33}
+.step.active-step{transform:translateY(-4px);border-color:var(--green)!important;box-shadow:0 0 18px #73e39a22}
+@media(max-width:520px){.flow-animation{height:220px}}
+
+</style>
+<style>.ncsc-research,.locations-guide,.pond-saturation,.risk-simulation{margin-top:24px}.muted{opacity:.78}.research-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}.research-grid>div{padding:17px;border-radius:16px;background:#102d24;border:1px solid #285044}.research-grid p{opacity:1;color:#d5e4de;line-height:1.45;margin-bottom:0}.research-grid b{color:#f5f0df}.sat-levels{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}.sat-levels>div{padding:16px;border-radius:14px;background:rgba(60,80,55,.07)}.sat-levels p{opacity:.75}.formula-box{padding:14px;border-radius:12px;background:rgba(50,80,55,.08)}.risk-flow{display:flex;flex-wrap:wrap;gap:9px;align-items:center;margin:20px 0;font-weight:700}.risk-flow span{padding:9px 11px;border-radius:11px;background:rgba(60,90,70,.08)}.action-box{padding:14px;border-radius:13px;background:rgba(60,90,70,.08);margin:15px 0;line-height:1.5}.primary-btn{border:0;border-radius:12px;padding:11px 16px;font-weight:800;cursor:pointer}.safety-note{font-size:13px;opacity:.8}@media(max-width:760px){.research-grid,.sat-levels{grid-template-columns:1fr}.risk-flow{gap:6px}}</style>
+<style>
+/* === Expanded safety + exhibition layer === */
+.safety-section{margin-top:24px}.safety-intro{max-width:850px}
+.safety-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
+.safety-card{padding:16px;border-radius:16px;background:rgba(255,255,255,.04);border:1px solid var(--line)}
+.safety-card h3{margin-top:0}.scene{height:260px;position:relative;overflow:hidden;border-radius:14px;background:linear-gradient(#8bc7df 0 43%,#78a85b 43% 67%,#283331 67%);border:1px solid var(--line)}
+.scene .water{position:absolute;right:0;left:0;bottom:0;height:31%;background:linear-gradient(#278bb0,#14556e);border-top:3px solid #72cce7}
+.person{position:absolute;left:13%;bottom:27%;font-size:39px;transition:all .8s ease;z-index:3}.person.walk{animation:walkToPond 3s ease forwards}.person.fall{animation:fallIntoWater 1.1s ease forwards}
+@keyframes walkToPond{0%{left:13%}65%{left:53%}100%{left:62%}}@keyframes fallIntoWater{0%{left:62%;bottom:27%;transform:rotate(0)}55%{left:70%;bottom:22%;transform:rotate(55deg)}100%{left:76%;bottom:8%;transform:rotate(95deg);opacity:.45}}
+.depth-zone{position:absolute;right:11%;bottom:31%;width:27%;height:20%;border:2px dashed #ffcf70;border-radius:50%;opacity:.7}.danger-label{position:absolute;right:10%;top:15%;padding:7px 9px;border-radius:9px;background:#382218;color:#ffd58a;font-size:11px;font-weight:800}
+.ripple{position:absolute;width:12px;height:12px;border:2px solid #9ce8ff;border-radius:50%;right:18%;bottom:10%;animation:ripple 1.4s infinite;opacity:0}.scene.active .ripple{opacity:1}@keyframes ripple{to{transform:scale(5);opacity:0}}
+.scene .barrier{position:absolute;right:31%;bottom:30%;width:7px;height:54px;background:#e0bf6c;transform:rotate(8deg);opacity:0}.scene.safe .barrier{opacity:1}
+.scenario-controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.scenario-controls button{font-size:12px;padding:9px 12px}
+.accident-road{background:linear-gradient(#9bc9d7 0 38%,#62875b 38% 55%,#2b3030 55%)}.road-water{position:absolute;left:0;right:0;bottom:0;height:27%;background:#2d7fa0;opacity:.9}.road-person{bottom:25%;left:17%}.road-person.fall{animation:roadSlip 1.2s ease forwards}@keyframes roadSlip{to{left:58%;bottom:20%;transform:rotate(65deg)}}
+.drain-scene{background:linear-gradient(#b5d6df 0 48%,#7b9c64 48% 100%)}.drain{position:absolute;left:46%;bottom:0;width:26%;height:22%;background:#172322;border:3px solid #65746c;border-radius:5px 5px 0 0}.drain-person{bottom:21%;left:16%}.drain-person.fall{animation:drainStep 1.1s ease forwards}@keyframes drainStep{to{left:43%;bottom:17%;transform:rotate(35deg)}}
+.safety-banner{margin-top:18px;padding:14px;border-left:4px solid var(--gold);background:#211f12;border-radius:8px;color:#e9ddb0}
+.compare-table{width:100%;border-collapse:collapse;margin-top:14px}.compare-table th,.compare-table td{border:1px solid var(--line);padding:11px;text-align:left}.compare-table th{background:#17382b}.mini-flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:14px}.mini-flow span{padding:9px 11px;border-radius:10px;background:#17382b;border:1px solid var(--line)}
+.chat-wide{min-height:430px}.suggestions{display:flex;gap:7px;flex-wrap:wrap;margin:9px 0}.suggestions button{font-size:11px;padding:7px 9px;background:transparent;color:var(--text);border:1px solid var(--line)}
+.typing{opacity:.7;font-style:italic}.source-note{font-size:10px;opacity:.65;margin-top:5px}
+@media(max-width:760px){.safety-grid{grid-template-columns:1fr}.scene{height:230px}.compare-table{font-size:12px}}
+</style>
+<style>
+/* === Final polish: calculator + motion === */
+.calc input:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px #a8dfb01c,0 0 14px #73e39a20}
+.calc input.invalid{border-color:#e07b7b;box-shadow:0 0 0 3px #e07b7b18}
+.calc .calc-help{grid-column:1/-1;font-size:12px;color:var(--muted);margin-top:-3px}
+.calc-btn{transition:transform .2s,box-shadow .2s}.calc-btn:hover{transform:translateY(-2px);box-shadow:0 8px 18px #73e39a22}.calc-btn:active{transform:translateY(0)}
+.result{min-height:86px;transition:transform .3s,box-shadow .3s}.result.updated{animation:resultPop .45s ease;box-shadow:0 0 22px #73e39a18}
+@keyframes resultPop{0%{transform:scale(.985);opacity:.65}60%{transform:scale(1.015)}100%{transform:scale(1);opacity:1}}
+.card,.safety-card,.research-grid>div,.step,.zone{transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease}.card:hover,.safety-card:hover,.research-grid>div:hover{transform:translateY(-3px);box-shadow:0 12px 28px #0003}
+.flow-animation .flow-garden,.flow-animation .flow-tank,.flow-animation .flow-pond{animation:floatPlace 3s ease-in-out infinite}.flow-animation .flow-tank{animation-delay:.35s}.flow-animation .flow-pond{animation-delay:.7s}
+@keyframes floatPlace{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+.map .zone{animation:zonePulse 4s ease-in-out infinite}.map .z2{animation-delay:.4s}.map .z3{animation-delay:.8s}.map .z4{animation-delay:1.2s}.map .z5{animation-delay:1.6s}.map .z6{animation-delay:2s}.map .z7{animation-delay:2.4s}
+@keyframes zonePulse{0%,100%{box-shadow:0 8px 18px #0005}50%{box-shadow:0 8px 24px #73e39a18}}
+.metric{transition:transform .25s,color .25s}.metric.metric-flash{animation:metricFlash .42s ease}.status.flash{animation:statusFlash .45s ease}
+@keyframes metricFlash{0%{transform:scale(1)}45%{transform:scale(1.08)}100%{transform:scale(1)}}
+@keyframes statusFlash{0%{transform:scale(1)}45%{transform:scale(1.07)}100%{transform:scale(1)}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition:none!important}}
+</style>
+<style id="live-video-touch">
+/* Live/video-like exhibition touch: subtle, continuous motion without changing content */
+@keyframes liveFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes liveGlow{0%,100%{box-shadow:0 0 0 rgba(56,189,248,0)}50%{box-shadow:0 0 22px rgba(56,189,248,.16)}}
+@keyframes liveScan{0%{transform:translateX(-120%);opacity:0}18%{opacity:.7}60%{opacity:.25}100%{transform:translateX(220%);opacity:0}}
+@keyframes liveFill{from{transform:scaleX(.94);opacity:.72}to{transform:scaleX(1);opacity:1}}
+@keyframes liveDot{0%,100%{transform:scale(.9);opacity:.65}50%{transform:scale(1.18);opacity:1}}
+@keyframes liveShimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+@keyframes liveReveal{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.live-scan{position:relative;overflow:hidden}
+.live-scan::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,transparent,rgba(255,255,255,.09),transparent);transform:translateX(-120%);animation:liveScan 4.8s ease-in-out infinite}
+.live-card{animation:liveGlow 4s ease-in-out infinite}
+.live-float{animation:liveFloat 3.6s ease-in-out infinite}
+.live-dot{animation:liveDot 1.7s ease-in-out infinite}
+.live-progress{transform-origin:left;animation:liveFill 1.2s ease-out both}
+.live-shimmer{background-image:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.10) 48%,transparent 66%);background-size:220% 100%;animation:liveShimmer 4.5s linear infinite}
+.live-reveal{animation:liveReveal .65s ease both}
+[data-live-table] tbody tr{transition:transform .25s ease,box-shadow .25s ease,background .25s ease}
+[data-live-table] tbody tr:hover{transform:translateX(5px);box-shadow:inset 3px 0 0 currentColor}
+[data-live-table] td,.table td,.table-row{transition:opacity .25s ease,transform .25s ease}
+.metric-value{transition:transform .35s ease,opacity .35s ease}
+.metric-value.live-update{animation:liveFloat .55s ease}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+<script>
+(function(){
+  function enhance(){
+    const selectors=['.card','.panel','.metric','.dashboard-card','.stat-card','.info-card','.table-container','table'];
+    document.querySelectorAll(selectors.join(',')).forEach((el,i)=>{
+      el.classList.add('live-scan');
+      if(i%5===0) el.classList.add('live-card');
+    });
+    document.querySelectorAll('table').forEach(t=>{
+      t.setAttribute('data-live-table','1');
+      t.querySelectorAll('tbody tr').forEach((r,i)=>{r.style.animationDelay=(i*.07)+'s';});
+    });
+    document.querySelectorAll('.metric-value,[id*="runoff"],[id*="infiltration"],[id*="storage"],[id*="pond"]').forEach(el=>{
+      if(!el.dataset.liveBound){
+        el.dataset.liveBound='1';
+        new MutationObserver(()=>{el.classList.remove('live-update');void el.offsetWidth;el.classList.add('live-update');}).observe(el,{childList:true,characterData:true,subtree:true});
+      }
+    });
+    document.querySelectorAll('button,.btn,.calculate,.calc-btn').forEach(btn=>{
+      btn.addEventListener('click',()=>{btn.classList.remove('live-shimmer');void btn.offsetWidth;btn.classList.add('live-shimmer');},{passive:true});
+    });
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',enhance);else enhance();
+})();
+</script>
+
+<style id="final-live-upgrade">
+/* === FINAL LIVE / VIDEO-STYLE UPGRADE === */
+html{scroll-behavior:smooth}
+body{background-image:radial-gradient(circle at 15% 20%,rgba(115,227,154,.055),transparent 28%),radial-gradient(circle at 85% 70%,rgba(67,184,232,.05),transparent 30%)}
+/* Section reveal: gives the entire lower half a continuous motion language */
+section,.hero,.wrap > .card,.wrap > .panel{animation:sectionIn .8s cubic-bezier(.2,.8,.2,1) both;animation-timeline:view();animation-range:entry 5% cover 22%}
+@keyframes sectionIn{from{opacity:0;transform:translateY(28px) scale(.985);filter:blur(2px)}to{opacity:1;transform:none;filter:none}}
+/* Browsers without scroll-driven animation still get visible motion from the JS observer below. */
+.live-section{position:relative;overflow:hidden}
+.live-section:before{content:"";position:absolute;inset:-2px;background:linear-gradient(110deg,transparent 0%,rgba(115,227,154,.045) 45%,rgba(67,184,232,.08) 50%,transparent 55%);transform:translateX(-120%);animation:sectionSweep 5s ease-in-out infinite;pointer-events:none;z-index:0}
+.live-section > *{position:relative;z-index:1}
+@keyframes sectionSweep{0%,55%{transform:translateX(-120%)}80%,100%{transform:translateX(120%)}}
+/* Make dashboard feel like a live monitoring screen */
+.dash-live{position:relative!important;overflow:hidden;box-shadow:0 0 0 1px rgba(115,227,154,.08),0 0 34px rgba(67,184,232,.10);}
+.dash-live:after{content:"LIVE MONITORING";position:absolute;right:12px;top:10px;font-size:9px;letter-spacing:1.4px;color:#9ce8ff;opacity:.75;animation:liveBlink 1.5s ease-in-out infinite;pointer-events:none}
+@keyframes liveBlink{50%{opacity:.25}}
+.dash-visual:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 0 46%,rgba(115,227,154,.10) 49%,transparent 52%);animation:radarSweep 3.4s linear infinite;pointer-events:none}
+@keyframes radarSweep{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
+.sensor-node{animation:sensorPulse 1.6s ease-in-out infinite}
+.sensor-ring{animation:sensorRing 2s ease-out infinite}
+.data-packet{animation:dataTravel 2.4s linear infinite}
+.dp2{animation-delay:1.2s}
+@keyframes sensorPulse{50%{transform:scale(1.12);filter:drop-shadow(0 0 10px rgba(115,227,154,.65))}}
+@keyframes sensorRing{0%{transform:scale(.55);opacity:.8}100%{transform:scale(1.7);opacity:0}}
+@keyframes dataTravel{0%{transform:translate(0,0);opacity:0}12%{opacity:1}50%{transform:translate(95px,18px);opacity:1}88%{opacity:.8}100%{transform:translate(190px,0);opacity:0}}
+.water-level{animation:waterBreath 2.8s ease-in-out infinite}
+@keyframes waterBreath{50%{filter:brightness(1.15);transform:scaleX(1.015)}}
+/* Flow section: moving droplets + travelling signal */
+.flow-animation:after{content:"";position:absolute;left:-10%;right:-10%;top:48%;height:3px;background:linear-gradient(90deg,transparent,#73e39a,#43b8e8,transparent);background-size:180px 100%;animation:flowSignal 2.2s linear infinite;opacity:.6;pointer-events:none}
+@keyframes flowSignal{to{background-position:180px 0}}
+.flow-animation .rain-drop{filter:drop-shadow(0 0 5px rgba(67,184,232,.65))}
+/* Map: pulse each system node and animate arrows */
+.zone{transition:transform .25s ease,filter .25s ease;animation:nodeFloat 3.2s ease-in-out infinite}
+.zone:hover{transform:translateY(-5px) scale(1.035);filter:drop-shadow(0 0 10px rgba(115,227,154,.35))}
+.zone:nth-of-type(2n){animation-delay:-1.1s}.zone:nth-of-type(3n){animation-delay:-2.1s}
+.arrow{animation:arrowFlow 1.4s ease-in-out infinite}
+@keyframes nodeFloat{50%{transform:translateY(-3px)}}
+@keyframes arrowFlow{50%{opacity:.45;transform:translateY(3px)}}
+/* Calculator: all three outputs visibly respond */
+.calc-result-grid>div{position:relative;overflow:hidden;transition:transform .25s,box-shadow .25s}
+.calc-result-grid>div:after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 35%,rgba(115,227,154,.16) 50%,transparent 65%);transform:translateX(-100%);animation:resultSweep 3.2s ease-in-out infinite}
+.calc-result-grid>div:nth-child(2):after{animation-delay:.8s}.calc-result-grid>div:nth-child(3):after{animation-delay:1.6s}
+@keyframes resultSweep{0%,65%{transform:translateX(-100%)}85%,100%{transform:translateX(100%)}}
+.calc-result-grid strong{display:inline-block;min-width:70px}
+.formula-live>div{animation:formulaPulse 3s ease-in-out infinite}.formula-live>div:nth-child(2){animation-delay:1s}.formula-live>div:nth-child(3){animation-delay:2s}
+@keyframes formulaPulse{50%{transform:translateY(-3px);box-shadow:0 0 18px rgba(115,227,154,.10)}}
+/* Tables: scanning beam + active row */
+.table-live-head{position:relative;overflow:hidden}
+.table-live-head:after{content:"";position:absolute;left:-30%;top:0;width:28%;height:100%;background:linear-gradient(90deg,transparent,rgba(115,227,154,.25),transparent);animation:tableBeam 2.5s linear infinite}
+@keyframes tableBeam{to{left:120%}}
+table tbody tr{transition:transform .3s ease,background .3s ease,box-shadow .3s ease}
+table tbody tr.live-row{transform:translateX(5px);background:rgba(115,227,154,.075);box-shadow:inset 3px 0 0 #73e39a}
+/* Lower research/AI cards get motion too */
+.research-grid>div,.mini-flow span,.safety-card,.chat-wide,.notice,.safety-banner{animation:cardRise 4s ease-in-out infinite}
+.research-grid>div:nth-child(2n),.mini-flow span:nth-child(2n),.safety-card:nth-child(2n){animation-delay:-1.3s}
+.research-grid>div:nth-child(3n),.mini-flow span:nth-child(3n),.safety-card:nth-child(3n){animation-delay:-2.5s}
+@keyframes cardRise{50%{transform:translateY(-3px)}}
+/* Safety simulation: visibly show the approach -> slip -> fall -> ripple sequence */
+.scene{box-shadow:inset 0 0 0 1px rgba(255,255,255,.04),0 12px 30px rgba(0,0,0,.16)}
+.scene.active .water{animation:waterSurge 1.8s ease-in-out infinite}
+@keyframes waterSurge{50%{height:34%;filter:brightness(1.12)}}
+.person.fall{animation:realisticPondFall 1.15s cubic-bezier(.2,.75,.25,1) forwards!important;transform-origin:50% 85%}
+@keyframes realisticPondFall{0%{left:62%;bottom:27%;transform:rotate(0) translateY(0);opacity:1}25%{left:64%;bottom:27%;transform:rotate(-8deg) translateY(-5px)}48%{left:68%;bottom:23%;transform:rotate(34deg) translateY(2px)}72%{left:72%;bottom:17%;transform:rotate(70deg) translateY(7px)}100%{left:75%;bottom:9%;transform:rotate(92deg) translateY(12px);opacity:.8}}
+.scene.active .ripple{animation:realRipple 1.25s ease-out infinite}
+@keyframes realRipple{0%{transform:scale(.35);opacity:.9}100%{transform:scale(5.5);opacity:0}}
+.scene.active .danger-label{animation:dangerFlash .8s ease-in-out infinite}
+@keyframes dangerFlash{50%{filter:brightness(1.5);transform:scale(1.04)}}
+/* Road/drain: same visual storytelling language */
+.road-person.fall{animation:roadRealSlip 1.15s ease forwards!important;transform-origin:50% 85%}
+@keyframes roadRealSlip{0%{left:17%;bottom:25%;transform:rotate(0)}55%{left:43%;bottom:25%;transform:rotate(18deg)}78%{left:51%;bottom:21%;transform:rotate(58deg)}100%{left:58%;bottom:20%;transform:rotate(72deg)}}
+.drain-person.fall{animation:drainRealFall 1.1s ease forwards!important;transform-origin:50% 85%}
+@keyframes drainRealFall{0%{left:16%;bottom:21%;transform:rotate(0)}55%{left:34%;bottom:21%;transform:rotate(-12deg)}80%{left:40%;bottom:17%;transform:rotate(38deg)}100%{left:43%;bottom:17%;transform:rotate(55deg)}}
+/* Safety sensor overlay */
+.scene.scan:before{content:"SCANNING • SENSOR ACTIVE";position:absolute;left:10px;top:10px;padding:6px 8px;border-radius:7px;background:rgba(10,30,25,.82);border:1px solid rgba(115,227,154,.45);color:#bdf5cc;font-size:9px;letter-spacing:1px;z-index:8;animation:scanText 1s ease-in-out infinite}
+.scene.scan:after{content:"";position:absolute;left:0;right:0;top:-4px;height:3px;background:#73e39a;box-shadow:0 0 12px #73e39a;animation:scanLine 1.5s linear infinite;z-index:9}
+@keyframes scanLine{to{top:100%}}@keyframes scanText{50%{opacity:.45}}
+/* Give headings a subtle live indicator */
+.title{position:relative}.title:after{content:"";display:inline-block;width:6px;height:6px;margin-left:8px;border-radius:50%;background:#73e39a;box-shadow:0 0 10px #73e39a;vertical-align:middle;animation:titleDot 1.5s infinite}
+@keyframes titleDot{50%{opacity:.25;transform:scale(.7)}}
+@media(max-width:760px){.dash-live:after{display:none}.scene{height:240px}.data-packet{display:none}}
+@media(prefers-reduced-motion:reduce){section,.hero,.wrap>.card,.wrap>.panel{animation:none!important}.live-section:before,.dash-visual:before,.flow-animation:after,.person.fall,.road-person.fall,.drain-person.fall{animation:none!important}}
+</style>
+
+<style id="final-white-theme">
+:root{
+ --bg:#ffffff;--surface:#ffffff;--surface2:#f5f9fc;--ink:#10243a;--muted:#4d6478;
+ --primary:#087ea4;--primary2:#075985;--accent:#f59e0b;--green:#159447;--danger:#dc2626;
+ --line:#cbd8e3;--shadow:0 14px 34px rgba(16,36,58,.10)
+}
+html,body{background:#fff!important;color:var(--ink)!important}
+body{background:linear-gradient(180deg,#fff 0%,#f7fbfd 48%,#fff 100%)!important}
+body::before{opacity:.12!important;background:radial-gradient(circle at 12% 8%,rgba(8,126,164,.10),transparent 28%),radial-gradient(circle at 88% 18%,rgba(21,148,71,.08),transparent 24%)!important}
+.card,.panel,.metric,.dashboard-card,.stat-card,.info-card,.table-container,section,.simulation-card,.map-card,.flow-card{background:rgba(255,255,255,.96)!important;color:var(--ink)!important;border-color:var(--line)!important;box-shadow:var(--shadow)!important}
+h1,h2,h3,h4,h5,h6,strong,b,.title,.metric-value{color:#10243a!important}
+p,li,td,th,small,.muted,.subtitle{color:#304a60!important}
+.hero,.hero-section{background:linear-gradient(135deg,#eef8fb 0%,#fff 55%,#f4fbf6 100%)!important;color:#10243a!important}
+button,.btn,.control-btn{color:#fff!important;background:linear-gradient(135deg,#087ea4,#075985)!important;border-color:#075985!important}
+input,select,textarea{background:#fff!important;color:#10243a!important;border-color:#9fb3c3!important}
+.badge,.tag,.pill{background:#e8f4f8!important;color:#075985!important;border-color:#9dd1df!important}
+.status,.risk,.state{font-weight:800!important}
+.live-scan::after{background:linear-gradient(90deg,transparent,rgba(8,126,164,.12),transparent)!important}
+.live-shimmer::after{background:linear-gradient(90deg,transparent,rgba(8,126,164,.22),transparent)!important}
+table{background:#fff!important;border-color:var(--line)!important}thead{background:#e9f4f8!important}th{color:#075985!important}tbody tr:hover{background:#f1f8fb!important}
+.metric-value{color:#075985!important}.accent,.highlight{color:#b45309!important}.success,.safe{color:#15803d!important}.warning{color:#b45309!important}.danger,.critical{color:#b91c1c!important}
+.flow-line,.progress,.bar{background:#dbe8ef!important}.flow-fill,.progress-fill,.bar-fill{background:linear-gradient(90deg,#0b8ab3,#16a34a)!important}
+.sensor,.node,.pulse{border-color:#0b8ab3!important;box-shadow:0 0 0 5px rgba(11,138,179,.10),0 0 22px rgba(11,138,179,.18)!important}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;transition-duration:.001ms!important}}
+</style>
+
+<style id="visibility-fix-v2">
+/* High-contrast white exhibition theme — visibility first */
+:root{
+ --bg:#f7fafc; --surface:#ffffff; --surface2:#eef6fa;
+ --ink:#12263a; --muted:#40586c; --primary:#056b8f; --primary2:#034b68;
+ --accent:#c66a00; --green:#087a3b; --danger:#b42318;
+ --line:#b9cad7; --shadow:0 10px 28px rgba(18,38,58,.12)
+}
+body{background:linear-gradient(180deg,#f8fbfd 0%,#fff 42%,#f5fafc 100%)!important;color:#12263a!important}
+/* Every content card gets a real white surface and readable copy */
+.card,.panel,.metric,.dashboard-card,.stat-card,.info-card,.table-container,.simulation-card,.map-card,.flow-card,
+.ncsc-research,.locations-guide,.pond-saturation,.risk-simulation,
+.safety-card,.research-grid>div,.route-box,.faq,.notice,.safety-banner,.action-box,.formula-box,.formula-live>div,
+.compare-table,.chat-wide,.chat,.messages,.mini-flow span,.step,.zone,.timeline .t,
+.stat-strip div,.sat-levels>div{
+ background:#fff!important;color:#12263a!important;border:1px solid #b9cad7!important;box-shadow:0 8px 24px rgba(18,38,58,.08)!important;
+}
+/* Text hierarchy */
+h1,h2,h3,h4,h5,h6,.title,.big-title,strong,b,.metric-value,.research-grid b,.stat-strip strong,.faq b,.step b,.zone b{
+ color:#12263a!important;text-shadow:none!important
+}
+p,li,td,small,.muted,.subtitle,.safety-note,.sources-note,.source-note,.small,.research-grid p,.sat-levels p,.action-box,.formula-box{
+ color:#40586c!important;opacity:1!important
+}
+.kicker,.slide-head .kicker{color:#056b8f!important}
+.accent,.highlight,.warning{color:#a95500!important}.success,.safe,.green{color:#087a3b!important}.danger,.critical{color:#b42318!important}
+.badge,.tag,.pill{background:#e7f4f8!important;color:#034b68!important;border:1px solid #9ecddd!important}
+/* Hero: keep the rain illustration dark enough, but make its labels bright */
+.hero,.hero-section{background:linear-gradient(135deg,#eaf6fa,#fff 55%,#edf8f1)!important;color:#12263a!important;border-color:#b9cad7!important}
+.hero-card{background:#fff!important}
+.rain{background:linear-gradient(180deg,#17607a 0%,#0e5267 48%,#185a43 100%)!important;border:1px solid #0a4e65;box-shadow:inset 0 0 35px rgba(255,255,255,.08),0 10px 25px rgba(18,38,58,.16)}
+.rain .flow{background:rgba(3,25,36,.72)!important;border:1px solid rgba(255,255,255,.28)!important;box-shadow:0 6px 18px rgba(0,0,0,.18)}
+.rain .flow b{color:#fff!important;text-shadow:0 1px 2px #000!important}
+.cloud{filter:drop-shadow(0 3px 5px rgba(0,0,0,.28))}.drops span{color:#bcefff!important;text-shadow:0 0 8px #fff!important}
+/* Dashboard and visualization labels */
+.dash-live{background:linear-gradient(180deg,#f4fafc,#fff)!important;border-color:#b9cad7!important;color:#12263a!important;box-shadow:0 8px 24px rgba(18,38,58,.09)!important}
+.dash-live-head,.dash-data{color:#40586c!important}.dash-data b{color:#056b8f!important}
+.dash-visual{border-color:#8caab9!important;box-shadow:inset 0 0 25px rgba(0,0,0,.08)}
+.dash-label,.dash-stage{color:#fff!important;text-shadow:0 1px 3px #000!important}
+.depth-readout{background:rgba(9,35,44,.88)!important;color:#fff!important;border-color:#75cde2!important}
+.warning-flash{background:#8f2d20!important;color:#fff!important;border-color:#ffb19f!important;text-shadow:0 1px 2px #000}
+/* Tables: never allow pale-on-pale text */
+table,.compare-table{background:#fff!important;color:#12263a!important;border-color:#b9cad7!important}
+thead,.compare-table th{background:#e6f2f7!important;color:#034b68!important!important}
+th{color:#034b68!important;font-weight:800!important}td{color:#29465b!important;background:#fff!important}
+tbody tr:nth-child(even) td{background:#f7fafc!important}tbody tr:hover td{background:#eaf6fa!important;color:#12263a!important}
+.compare-table tbody tr.live-row td{background:#e4f4fa!important;color:#12263a!important;box-shadow:inset 3px 0 #087ea4}
+/* Research / NCSC section — this was one of the weakest visibility areas */
+.ncsc-research,.locations-guide,.pond-saturation,.risk-simulation{background:#fff!important}
+.research-grid>div{background:linear-gradient(180deg,#fff,#f7fbfd)!important;border:1px solid #b9cad7!important}
+.research-grid>div:hover{box-shadow:0 12px 28px rgba(5,107,143,.14)!important;border-color:#79b8ca!important}
+.research-grid p{color:#40586c!important}.research-grid b{color:#12364b!important}
+.sat-levels>div{background:#f7fbfd!important;border-color:#c4d5df!important}.formula-box,.action-box{background:#edf6fa!important;border-color:#a9c8d5!important;color:#29465b!important}
+.risk-flow span{background:#edf6fa!important;color:#12364b!important;border:1px solid #b8d0dc!important}.risk-flow b{color:#087ea4!important}
+.primary-btn,.calc-btn,.btn,.control-btn{color:#fff!important;background:linear-gradient(135deg,#067fa7,#034b68)!important;border-color:#034b68!important;box-shadow:0 7px 16px rgba(3,75,104,.18)!important}
+/* Safety cards stay white; scenes remain rich, but headings/copy are dark */
+.safety-card h3{color:#12263a!important}.safety-card .small{color:#40586c!important}
+.scene{border-color:#9bb4c1!important;box-shadow:inset 0 0 20px rgba(0,0,0,.08)}
+.danger-label{background:rgba(255,255,255,.92)!important;color:#8f241a!important;border-color:#e5a39b!important;font-weight:900!important;text-shadow:none!important}
+.scene.safe .danger-label{background:#e7f8ee!important;color:#087a3b!important;border-color:#78c69b!important}
+/* Flow/map cards */
+.flow-line,.progress,.bar{background:#d8e5ec!important}.flow-fill,.progress-fill,.bar-fill{background:linear-gradient(90deg,#067fa7,#159447)!important}
+.route-box{background:linear-gradient(180deg,#fff,#f7fbfd)!important}.route-node{background:#eef6fa!important;color:#12364b!important;border-color:#9fc2d0!important}.arrow2{color:#067fa7!important}
+.stat-strip div{background:#f2f8fb!important}.stat-strip strong{color:#056b8f!important}
+/* Forms and calculators */
+input,select,textarea{background:#fff!important;color:#12263a!important;border:1px solid #9eb5c3!important}
+input::placeholder,textarea::placeholder{color:#718595!important}
+.result,.calc-result-grid>div{background:#f4fafc!important;border:1px solid #b8cdd8!important;color:#12263a!important}
+.calc-result-grid span{color:#536b7c!important}.calc-result-grid strong{color:#056b8f!important}
+/* Subtle light effects, not washed-out glow */
+.card,.panel,.metric,.info-card,.research-grid>div,.safety-card{position:relative;overflow:hidden}
+.card::after,.panel::after,.metric::after,.info-card::after,.research-grid>div::after,.safety-card::after{
+ content:"";position:absolute;inset:-20% auto -20% -35%;width:28%;transform:skewX(-18deg);background:linear-gradient(90deg,transparent,rgba(255,255,255,.75),transparent);opacity:.35;pointer-events:none;animation:softLightSweep 6s ease-in-out infinite
+}
+@keyframes softLightSweep{0%,55%{left:-35%;opacity:0}65%{opacity:.35}85%,100%{left:125%;opacity:0}}
+@media(prefers-reduced-motion:reduce){.card::after,.panel::after,.metric::after,.info-card::after,.research-grid>div::after,.safety-card::after{animation:none!important}}
+</style>
+
+<style id="readability-beauty-overhaul">
+/* === READABILITY + LIGHT EFFECT OVERHAUL === */
+:root{--ink:#102a43;--ink2:#284b63;--blue2:#087ea4;--cyan:#16a7c9;--green2:#16834a;--gold:#b86b00;--line2:#b8cfdb;--soft:#f5fafc}
+body{background:linear-gradient(180deg,#ffffff 0%,#f5fbfd 38%,#ffffff 70%,#f5faf8 100%)!important;color:var(--ink)!important}
+nav{background:rgba(255,255,255,.94)!important;border-bottom:1px solid #b8cfdb!important;box-shadow:0 5px 22px rgba(16,42,67,.08)!important}
+.logo{color:#0b3d5a!important;text-shadow:none!important;font-size:18px}.logo i{color:#16834a!important;text-shadow:0 0 10px rgba(22,131,74,.16)!important}.links a{color:#244b63!important;font-weight:800}.links a:hover{color:#087ea4!important}
+.hero{background:linear-gradient(135deg,#f0f9fc,#fff 52%,#f1fbf5)!important}.hero h1{color:#0d2940!important;text-shadow:0 2px 10px rgba(8,126,164,.08)!important}.hero h1 .green{color:#16834a!important}.hero p{color:#38566b!important}.badge{font-weight:900!important}
+/* universal readable surfaces */
+.card,.panel,.metric,.dashboard-card,.stat-card,.info-card,.table-container,.simulation-card,.map-card,.flow-card,.ncsc-research,.locations-guide,.pond-saturation,.risk-simulation,.safety-card,.research-grid>div,.route-box,.faq,.notice,.safety-banner,.action-box,.formula-box,.formula-live>div,.chat-wide,.chat,.messages,.mini-flow span,.step,.timeline .t{background:#fff!important;color:var(--ink)!important;border:1px solid var(--line2)!important;box-shadow:0 8px 26px rgba(16,42,67,.09)!important}
+h1,h2,h3,h4,h5,h6,.title,.big-title,.card b,.card strong,.research-grid b,.step b,.faq b,.timeline b{color:var(--ink)!important}
+p,li,.muted,.small,.sources-note,.safety-note,.source-note,.calc-help,.formula-live span,.research-grid p,.sat-levels p{color:var(--ink2)!important;opacity:1!important}
+.title{font-weight:900!important;letter-spacing:-.02em}.title:after{background:#16a7c9!important;box-shadow:0 0 12px rgba(22,167,201,.7)!important}
+/* Hero rain labels: light, readable, premium */
+.rain{background:linear-gradient(160deg,#164b68 0%,#0d6f8e 45%,#176b4c 100%)!important;box-shadow:inset 0 0 55px rgba(255,255,255,.12),0 14px 30px rgba(16,42,67,.18)!important}
+.rain .flow{background:rgba(255,255,255,.93)!important;border:1px solid rgba(255,255,255,.8)!important;box-shadow:0 8px 22px rgba(0,0,0,.18)!important;backdrop-filter:blur(5px)}
+.rain .flow b{color:#0c405a!important;text-shadow:none!important;background:#fff!important;border:1px solid #9ec9d7!important;box-shadow:0 3px 10px rgba(0,0,0,.08)!important}
+.drops span{color:#d7f7ff!important;text-shadow:0 0 10px #fff!important}
+/* Dashboard */
+.dashboard .card{overflow:visible!important}.dashboard .metric{color:#087ea4!important;font-weight:950!important;text-shadow:0 0 12px rgba(8,126,164,.12)!important}.dashboard .small{color:#31566e!important;font-weight:900!important;letter-spacing:.08em}
+.status{font-weight:950!important;color:#16834a!important}.control label{color:var(--ink)!important;font-weight:900!important}.control label b{color:#087ea4!important}
+.dash-live{background:linear-gradient(180deg,#f8fcfd,#fff)!important;border:1px solid #a9c8d5!important}.dash-live-head{color:#17445c!important}.dash-data{color:#3a5a6d!important}.dash-data b{color:#087ea4!important}
+.dash-visual{background:linear-gradient(180deg,#e9f8fc,#dceff4 50%,#dff3e8)!important;border:1px solid #8fb6c5!important;box-shadow:inset 0 0 35px rgba(8,126,164,.09)!important}.dash-label{color:#fff!important;text-shadow:0 2px 5px #082f40!important;font-weight:900!important}.dash-stage{color:#0b405a!important;background:rgba(255,255,255,.78)!important;border-radius:8px;padding:4px;text-shadow:none!important;font-weight:900!important}.water-level{background:#cfe2e9!important;border:1px solid #8bb2c1!important}.water-level b{color:#fff!important;text-shadow:0 1px 3px #0b405a!important}
+/* NCSC research cards */
+.ncsc-research{background:linear-gradient(180deg,#fff,#f7fcfe)!important}.research-grid>div{background:linear-gradient(145deg,#ffffff,#f2f9fc)!important;min-height:130px;box-shadow:0 8px 22px rgba(16,42,67,.08)!important}.research-grid>div b{color:#0b4d6a!important;font-size:15px!important}.research-grid>div p{color:#36576b!important;line-height:1.6!important}
+/* Observation / saturation */
+.sat-levels>div{background:#f7fbfd!important;color:var(--ink)!important;border:1px solid #c4d6df!important}.sat-levels b{font-weight:950!important}.formula-box,.action-box{background:linear-gradient(135deg,#edf8fb,#f5fbf7)!important;color:#25485e!important;border:1px solid #a8cbd7!important}
+/* map: readable but still realistic */
+#map .map{background:linear-gradient(180deg,#e7f5f8 0 48%,#e4f1e6 48% 100%)!important;border:2px solid #83aebb!important;box-shadow:inset 0 0 30px rgba(8,126,164,.08),0 10px 28px rgba(16,42,67,.12)!important}
+#map .road{background:#7b8c91!important;border-color:#fff!important;box-shadow:0 0 0 1px #52676d!important}.map .zone{color:#fff!important;text-shadow:0 1px 3px rgba(0,0,0,.75)!important;border-width:2px!important;box-shadow:0 8px 18px rgba(16,42,67,.18)!important}.map .b{background:#2d6d8c!important}.map .recharge{background:#3f7c4f!important}.map .pond{background:#087ea4!important}.map .sensor{background:#405d6a!important}.map .arrow{color:#087ea4!important;text-shadow:0 1px 3px #fff!important;filter:drop-shadow(0 0 5px rgba(8,126,164,.35))}
+#map .zone:hover{filter:drop-shadow(0 0 14px rgba(22,167,201,.5))!important}
+/* Calculator: every label, input and formula must be readable */
+#calculator .card{background:#fff!important}.calc label{color:#153b53!important;font-weight:900!important}.calc label::first-line{color:#153b53!important}.calc input{background:#fff!important;color:#102a43!important;border:2px solid #9bbac8!important;box-shadow:0 3px 10px rgba(16,42,67,.06)!important;font-weight:800!important}.calc input:focus{border-color:#087ea4!important;box-shadow:0 0 0 4px rgba(8,126,164,.12),0 5px 14px rgba(8,126,164,.12)!important}.calc-help{background:#f1f8fb!important;border-left:4px solid #16a7c9!important;padding:10px!important;border-radius:8px!important;color:#36576b!important}
+.result{background:linear-gradient(135deg,#eef9fc,#f2faf5)!important;color:#173e55!important;border:2px solid #a8cbd7!important;box-shadow:0 8px 18px rgba(8,126,164,.08)!important}.result b{color:#075a78!important}.calc-result-grid>div{background:linear-gradient(145deg,#f8fcfd,#eaf7fa)!important;border:2px solid #9fc5d3!important;box-shadow:0 6px 18px rgba(16,42,67,.08)!important}.calc-result-grid span{color:#36576b!important;font-weight:900!important}.calc-result-grid strong{color:#087ea4!important;font-size:22px!important;text-shadow:0 0 9px rgba(8,126,164,.12)!important}.formula-live>div{background:linear-gradient(145deg,#fff,#f1f8fa)!important;border:1px solid #aac8d4!important}.formula-live b{color:#0b526f!important}.formula-live span{color:#466275!important}
+/* Sponge AI */
+#ai .chat-wide{background:linear-gradient(180deg,#fff,#f6fbfd)!important}.suggestions button{background:#edf8fb!important;color:#0b4d68!important;border:1px solid #9fc7d5!important;font-weight:800!important;box-shadow:0 3px 9px rgba(16,42,67,.06)!important}.suggestions button:hover{background:#dff3f8!important;transform:translateY(-2px)}.messages{background:linear-gradient(180deg,#f5fbfd,#edf8f4)!important;border:1px solid #a9c9d5!important}.msg{box-shadow:0 4px 12px rgba(16,42,67,.07)!important}.bot{background:#e7f6ef!important;color:#123f31!important;border:1px solid #9bcdb7!important}.user{background:#e3f1f8!important;color:#0b4560!important;border:1px solid #9fc6d6!important}.chatbar input{background:#fff!important;color:#102a43!important;border:2px solid #9bbac8!important}.chatbar button{background:linear-gradient(135deg,#087ea4,#07516b)!important;color:#fff!important;border:0!important;box-shadow:0 6px 15px rgba(8,126,164,.22)!important}
+/* Tables / Conventional vs Responsive */
+.compare-table{background:#fff!important;border:1px solid #a9c6d2!important;box-shadow:0 8px 24px rgba(16,42,67,.08)!important}.compare-table th{background:linear-gradient(180deg,#dff2f8,#cde9f1)!important;color:#073f59!important;font-weight:950!important;border-bottom:2px solid #8fb9c8!important}.compare-table td{background:#fff!important;color:#294b60!important;border-bottom:1px solid #d5e2e8!important;line-height:1.55!important}.compare-table tbody tr:nth-child(even) td{background:#f6fafc!important}.compare-table tbody tr:hover td{background:#eaf7fb!important}.compare-table tbody tr.live-row td{background:#e0f3f8!important;color:#0c3d55!important;box-shadow:inset 4px 0 #087ea4!important}
+.table-live-head{color:#087ea4!important;font-weight:900!important}.live-led{background:#18a56a!important;box-shadow:0 0 10px rgba(24,165,106,.7)!important}
+/* All light effects: visible, not washed out */
+.card::after,.panel::after,.metric::after,.info-card::after,.research-grid>div::after,.safety-card::after{background:linear-gradient(90deg,transparent,rgba(22,167,201,.20),transparent)!important;opacity:.55!important}
+.primary-btn,.calc-btn,.btn,.control-btn{background:linear-gradient(135deg,#087ea4,#07516b)!important;color:#fff!important;font-weight:900!important}.btn.alt{background:#fff!important;color:#07516b!important;border:2px solid #087ea4!important}
+/* More deliberate motion */
+.research-grid>div,.info-card,.route-box,.step,.formula-live>div,.calc-result-grid>div,.sat-levels>div{animation:floatCard 5s ease-in-out infinite}
+.research-grid>div:nth-child(2n),.info-card:nth-child(2n),.calc-result-grid>div:nth-child(2n){animation-delay:-1.2s}.research-grid>div:nth-child(3n),.info-card:nth-child(3n){animation-delay:-2.4s}
+@keyframes floatCard{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes pulseBorder{0%,100%{box-shadow:0 8px 24px rgba(16,42,67,.08)}50%{box-shadow:0 8px 28px rgba(8,126,164,.20)}}
+#map .zone{animation:mapFloat 4s ease-in-out infinite}#map .z2{animation-delay:-.6s}#map .z3{animation-delay:-1.2s}#map .z4{animation-delay:-1.8s}#map .z5{animation-delay:-2.4s}#map .z6{animation-delay:-3s}#map .z7{animation-delay:-3.6s}@keyframes mapFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+#map .arrow{animation:arrowPulse 1.8s ease-in-out infinite}@keyframes arrowPulse{50%{transform:translateX(7px);filter:drop-shadow(0 0 9px rgba(8,126,164,.55))}}
+.calc-result-grid>div{animation:resultGlow 3.5s ease-in-out infinite}.calc-result-grid>div:nth-child(2){animation-delay:-1.1s}.calc-result-grid>div:nth-child(3){animation-delay:-2.2s}@keyframes resultGlow{50%{box-shadow:0 8px 26px rgba(8,126,164,.18)}}
+/* prevent decorative layers from covering text */
+.card::after,.panel::after,.metric::after,.info-card::after,.research-grid>div::after,.safety-card::after{z-index:0!important}.card>* ,.panel>* ,.metric>* ,.info-card>* ,.research-grid>div>* ,.safety-card>*{position:relative;z-index:1}
+@media(prefers-reduced-motion:reduce){.research-grid>div,.info-card,.route-box,.step,.formula-live>div,.calc-result-grid>div,#map .zone,#map .arrow{animation:none!important}}
+</style>
+<script id="extra-visual-motion">
+(function(){
+  const map=document.querySelector('#map .map');
+  if(map){
+    let stream=map.querySelector('.map-stream');
+    if(!stream){stream=document.createElement('div');stream.className='map-stream';stream.innerHTML=Array.from({length:10},(_,i)=>'<i style="--i:'+i+'"></i>').join('');map.appendChild(stream)}
+  }
+  const calc=document.getElementById('calculator');
+  if(calc){
+    calc.querySelectorAll('.calc input').forEach((el)=>el.addEventListener('input',()=>{el.animate([{boxShadow:'0 0 0 0 rgba(8,126,164,0)'},{boxShadow:'0 0 0 5px rgba(8,126,164,.14)'},{boxShadow:'0 0 0 0 rgba(8,126,164,0)'}],{duration:500})}));
+  }
+  document.querySelectorAll('.research-grid>div,.info-card,.route-box').forEach((el,i)=>{el.style.setProperty('--delay',(i%6)*.15+'s')});
+  const ai=document.querySelector('#ai .messages');
+  if(ai){setInterval(()=>{const b=document.createElement('span');b.className='ai-particle';b.textContent='•';b.style.left=(5+Math.random()*90)+'%';b.style.bottom='8px';ai.appendChild(b);setTimeout(()=>b.remove(),2200)},850)}
+})();
+</script>
+<style>
+.map-stream{position:absolute;inset:0;pointer-events:none;overflow:hidden}.map-stream i{position:absolute;width:7px;height:7px;border-radius:50%;background:#19a8c9;box-shadow:0 0 10px rgba(25,168,201,.8);left:10%;top:52%;animation:mapPacket 3.2s linear infinite;animation-delay:calc(var(--i)*-.32s)}@keyframes mapPacket{0%{transform:translate(0,0);opacity:0}10%{opacity:1}35%{transform:translate(150px,-65px)}60%{transform:translate(310px,10px)}82%{transform:translate(480px,65px)}100%{transform:translate(650px,20px);opacity:0}}.ai-particle{position:absolute;color:#16a7c9;opacity:.8;animation:aiRise 2.2s linear forwards;text-shadow:0 0 8px rgba(22,167,201,.7);pointer-events:none}@keyframes aiRise{to{transform:translateY(-120px);opacity:0}}
+</style>
+
+<style>
+/* Final live-exhibition polish */
+.live-compare-wrap{position:relative;background:linear-gradient(145deg,#ffffff,#f3fbfe);border:1px solid #cfe4ed;border-radius:24px;padding:18px 18px 12px;box-shadow:0 14px 35px rgba(16,36,58,.09);overflow:hidden}
+.live-compare-wrap:before{content:"";position:absolute;inset:-30%;background:radial-gradient(circle,rgba(21,154,196,.10),transparent 42%);animation:liveAura 6s ease-in-out infinite;pointer-events:none}
+.live-compare-wrap canvas{position:relative;z-index:1;width:100%;height:auto;display:block}
+.live-badge{position:absolute;right:18px;top:14px;z-index:3;font:700 11px Arial;color:#087ea4;letter-spacing:.08em;background:#e9f9fd;border:1px solid #b9e5ef;border-radius:999px;padding:7px 10px;box-shadow:0 0 0 0 rgba(21,154,196,.35);animation:liveBadge 2s infinite}
+.live-legend{position:relative;z-index:2;display:flex;gap:18px;align-items:center;flex-wrap:wrap;padding:5px 6px 2px;color:#29465b;font-size:13px;font-weight:600}.live-legend span{display:inline-flex;align-items:center;gap:7px}.legend-dot{width:10px;height:10px;border-radius:50%;display:inline-block}.legend-dot.conventional{background:#567b69}.legend-dot.sponge{background:#159ac4;box-shadow:0 0 10px rgba(21,154,196,.5)}.live-pulse-text{margin-left:auto;color:#087ea4;animation:textPulse 1.8s ease-in-out infinite}
+.water-story{margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:14px}.story-road,.story-sponge{position:relative;min-height:112px;border-radius:20px;padding:17px 18px;overflow:hidden;border:1px solid #d8e6ed;background:#fff;box-shadow:0 10px 25px rgba(16,36,58,.07)}.story-road{background:linear-gradient(180deg,#f8fafb,#eef3f5)}.story-sponge{background:linear-gradient(180deg,#f3fcff,#eefbf5)}.story-road b,.story-sponge b{position:relative;z-index:3;font-size:12px;letter-spacing:.08em;color:#17384d}.story-road span,.story-sponge span{position:absolute;left:18px;bottom:14px;color:#526b7a;font-size:13px;font-weight:600;z-index:3}.story-water{position:absolute;left:-18%;right:auto;height:18px;border-radius:99px;filter:blur(.1px);opacity:.9}.story-water.fast{top:54px;width:130%;background:repeating-linear-gradient(90deg,#79b7cb 0 24px,#dff4fa 24px 42px);animation:waterFast 2.2s linear infinite;transform:skewX(-18deg)}.story-water.slow{top:54px;width:120%;background:repeating-linear-gradient(90deg,#61c5df 0 20px,#c8f0da 20px 46px);animation:waterSlow 4.5s linear infinite;transform:skewX(-12deg)}.story-rain{position:absolute;display:flex;gap:7px;right:26px;top:8px;z-index:4}.story-rain span{font-size:15px;animation:rainBob 1.5s ease-in-out infinite}.story-rain span:nth-child(2){animation-delay:.25s}.story-rain span:nth-child(3){animation-delay:.5s}.story-rain span:nth-child(4){animation-delay:.75s}
+@keyframes liveAura{50%{transform:translate(3%,2%) scale(1.08);opacity:.7}}@keyframes liveBadge{50%{box-shadow:0 0 0 7px rgba(21,154,196,0)}}@keyframes textPulse{50%{opacity:.55}}@keyframes waterFast{to{transform:translateX(28%) skewX(-18deg)}}@keyframes waterSlow{to{transform:translateX(16%) skewX(-12deg)}}@keyframes rainBob{50%{transform:translateY(8px);opacity:.65}}
+section{animation:sectionLift .8s ease both;animation-timeline:view();animation-range:entry 0% cover 20%} .card:hover{transform:translateY(-3px);box-shadow:0 16px 35px rgba(16,36,58,.10)}
+@keyframes sectionLift{from{opacity:.35;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:700px){.water-story{grid-template-columns:1fr}.live-pulse-text{margin-left:0}.live-badge{position:relative;right:auto;top:auto;display:inline-block;margin-bottom:6px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.001ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}}
+</style><style id="ultra-live-upgrade">
+/* FINAL LIVE CINEMATIC UPGRADE — readability first */
+#chart{display:block;width:100%;height:auto;max-height:420px;border-radius:22px;background:#fff;box-shadow:0 14px 35px rgba(15,73,95,.10);border:1px solid #d7eaf2}
+.live-compare-wrap{position:relative;overflow:hidden;border-radius:24px;background:linear-gradient(180deg,#ffffff,#f3fbfd);padding:14px;box-shadow:0 12px 35px rgba(15,73,95,.08)}
+.live-compare-wrap:before{content:"";position:absolute;inset:-40% -10%;background:linear-gradient(100deg,transparent 35%,rgba(21,154,196,.08) 48%,transparent 61%);animation:cinematicSweep 5s linear infinite;pointer-events:none}
+@keyframes cinematicSweep{to{transform:translateX(45%)}}
+.live-badge{position:absolute;z-index:3;right:18px;top:14px;background:#e8fff2;color:#087a4b;border:1px solid #9fe3be;border-radius:999px;padding:7px 12px;font-weight:800;font-size:11px;letter-spacing:.08em;box-shadow:0 0 0 0 rgba(21,128,61,.2);animation:liveBadge 1.8s infinite}
+@keyframes liveBadge{50%{box-shadow:0 0 0 8px rgba(21,128,61,0)}}
+.water-story{position:relative;overflow:hidden;border-radius:20px!important}
+.water-story:after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(90deg,transparent 0 42px,rgba(21,154,196,.045) 43px 44px);animation:gridMove 7s linear infinite}
+@keyframes gridMove{to{background-position:44px 0}}
+/* cinematic mini-scenes */
+.live-scenes{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:18px}
+.live-scene{position:relative;min-height:170px;border:1px solid #d7eaf2;border-radius:20px;overflow:hidden;background:linear-gradient(180deg,#f8fdff,#eef9f6);box-shadow:0 10px 26px rgba(15,73,95,.08);isolation:isolate}
+.live-scene .sky{position:absolute;inset:0 0 42%;background:linear-gradient(#eaf7ff,#d9f2fb);z-index:-2}
+.live-scene .ground{position:absolute;left:0;right:0;bottom:0;height:45%;background:linear-gradient(#d8eee4,#b7d9c9);z-index:-1}
+.live-scene .road{position:absolute;left:0;right:0;bottom:8%;height:28px;background:#7d8d98;transform:skewY(-5deg)}
+.live-scene .label{position:absolute;left:11px;top:10px;background:rgba(255,255,255,.94);border:1px solid #d2e6ed;border-radius:10px;padding:5px 8px;font-size:10px;font-weight:900;color:#12364b;z-index:5}
+.live-scene .rain-drop{position:absolute;top:-20px;width:2px;height:13px;border-radius:9px;background:#159ac4;opacity:.75;animation:rainFall linear infinite}
+@keyframes rainFall{to{transform:translateY(205px);opacity:.15}}
+.live-scene .water-flow{position:absolute;height:10px;border-radius:99px;background:linear-gradient(90deg,#7ee7ff,#159ac4,#0c7395);box-shadow:0 0 12px rgba(21,154,196,.35);animation:flowRun 1.5s linear infinite}
+@keyframes flowRun{to{transform:translateX(180px)}}
+.live-scene .sensor{position:absolute;width:14px;height:14px;border-radius:50%;background:#18a66a;box-shadow:0 0 0 0 rgba(24,166,106,.5);animation:sensorPulse 1.5s infinite}
+@keyframes sensorPulse{50%{box-shadow:0 0 0 12px rgba(24,166,106,0)}}
+.live-scene .packet{position:absolute;width:7px;height:7px;border-radius:50%;background:#f59e0b;animation:packetMove 2s linear infinite}
+@keyframes packetMove{0%{transform:translateX(0);opacity:0}15%{opacity:1}85%{opacity:1}100%{transform:translateX(150px);opacity:0}}
+.scene-caption{position:absolute;left:11px;right:11px;bottom:10px;font-size:11px;line-height:1.25;color:#17384b;background:rgba(255,255,255,.82);padding:6px 8px;border-radius:9px;z-index:4}
+/* comparison table gets motion without hurting readability */
+#before-after .compare-table{position:relative}
+#before-after .compare-table tr{transition:transform .35s ease,box-shadow .35s ease;background:#fff}
+#before-after .compare-table tr:hover{transform:translateX(5px);box-shadow:inset 4px 0 #159ac4,0 8px 18px rgba(15,73,95,.08)}
+#before-after .compare-table td:last-child{position:relative}
+#before-after .compare-table td:last-child:before{content:"✓";display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;margin-right:7px;border-radius:50%;background:#e8fff2;color:#087a4b;font-weight:900;font-size:12px}
+/* extra motion for all major visual blocks */
+section>.wrap>.title{position:relative}
+section>.wrap>.title:after{content:"";display:block;width:54px;height:3px;margin-top:8px;border-radius:5px;background:linear-gradient(90deg,#159ac4,#18a66a);animation:titleLine 2.4s ease-in-out infinite alternate}
+@keyframes titleLine{to{width:115px;opacity:.55}}
+.card,.panel,.metric,.dashboard-card,.info-card,.research-grid>div,.formula-live>div{transition:transform .35s ease,box-shadow .35s ease,border-color .35s ease}
+.card:hover,.panel:hover,.info-card:hover,.research-grid>div:hover,.formula-live>div:hover{transform:translateY(-4px);box-shadow:0 16px 34px rgba(15,73,95,.11)}
+/* flowing data rails */
+.data-rail{position:relative;height:5px;border-radius:99px;background:#dceff4;overflow:hidden;margin:10px 0}
+.data-rail:after{content:"";position:absolute;top:0;left:-15%;width:15%;height:100%;border-radius:99px;background:linear-gradient(90deg,transparent,#159ac4,#18a66a,transparent);animation:rail 1.7s linear infinite}
+@keyframes rail{to{left:110%}}
+@media(max-width:800px){.live-scenes{grid-template-columns:repeat(2,1fr)}.live-badge{position:relative;display:inline-block;right:auto;top:auto;margin:0 0 8px}}
+@media(max-width:520px){.live-scenes{grid-template-columns:1fr}.live-scene{min-height:150px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.001ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}}
+</style>
+
+<style>
+/* FINAL readability polish */
+.steps .step .num{
+  background:#e8f5f8!important;
+  color:#075985!important;
+  border:2px solid #9ed8e7!important;
+  box-shadow:0 4px 12px rgba(7,89,133,.10)!important;
+}
+.steps .step:nth-child(2) .num{background:#eef8f1!important;color:#166534!important;border-color:#a9d9b8!important}
+.steps .step:nth-child(3) .num{background:#fff7e6!important;color:#9a5b00!important;border-color:#f0cd87!important}
+.steps .step:nth-child(4) .num{background:#fef0ef!important;color:#a33a35!important;border-color:#e7aaa6!important}
+.steps .step{background:#fff!important;color:#10243a!important}
+.compare-table th{background:#eaf6fa!important;color:#17445c!important;font-weight:800!important}
+.compare-table td{color:#29485a!important;background:#fff!important}
+.compare-table tr:nth-child(even) td{background:#f8fcfd!important}
+/* Clear, formal live pathway visual */
+.water-pathway-live{padding-bottom:8px}
+.pathway-visual{position:relative;overflow:hidden;border:1px solid #cfe5ed;border-radius:24px;background:linear-gradient(180deg,#fff,#f5fbfd);padding:24px;box-shadow:0 12px 30px rgba(16,36,58,.08)}
+.pv-rain{position:absolute;right:30px;top:12px;display:flex;gap:8px;z-index:4}
+.pv-rain span{font-size:18px;animation:pvRainBob 1.4s ease-in-out infinite}
+.pv-rain span:nth-child(2){animation-delay:.2s}.pv-rain span:nth-child(3){animation-delay:.4s}.pv-rain span:nth-child(4){animation-delay:.6s}
+.pv-track{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:20px}
+.pv-lane{position:relative;min-height:150px;border-radius:18px;padding:22px 18px 18px;overflow:hidden;border:1px solid #d5e5eb}
+.conventional-lane{background:linear-gradient(180deg,#f8fafb,#eef3f5)}
+.sponge-lane{background:linear-gradient(180deg,#f1fbfe,#effaf3)}
+.pv-lane>b{display:block;color:#17384d;font-size:13px;letter-spacing:.07em;position:relative;z-index:3}
+.pv-lane>span{display:block;margin-top:7px;color:#4d6675;font-size:13px;font-weight:600;position:relative;z-index:3}
+.pv-flow{position:absolute;left:-25%;width:150%;height:18px;bottom:35px;border-radius:99px}
+.fast-flow{background:repeating-linear-gradient(90deg,#76b4c9 0 24px,#e0f4f8 24px 42px);transform:skewX(-14deg);animation:pvFast 1.8s linear infinite}
+.slow-flow{background:repeating-linear-gradient(90deg,#5fc6df 0 20px,#c9edd8 20px 47px);transform:skewX(-10deg);animation:pvSlow 4.2s linear infinite}
+.pv-node{position:absolute;bottom:67px;padding:5px 8px;border-radius:10px;background:#fff;border:1px solid #b9dfe8;color:#17627b;font-size:8px;font-weight:900;letter-spacing:.06em;animation:pvNode 2.8s ease-in-out infinite}
+.pv-node.n1{left:8%}.pv-node.n2{left:31%;animation-delay:.35s}.pv-node.n3{left:55%;animation-delay:.7s}.pv-node.n4{left:78%;animation-delay:1.05s}
+@keyframes pvRainBob{50%{transform:translateY(5px);opacity:.7}}
+@keyframes pvFast{from{transform:translateX(0) skewX(-14deg)}to{transform:translateX(38%) skewX(-14deg)}}
+@keyframes pvSlow{from{transform:translateX(0) skewX(-10deg)}to{transform:translateX(20%) skewX(-10deg)}}
+@keyframes pvNode{50%{transform:translateY(-4px);box-shadow:0 6px 15px rgba(21,154,196,.14)}}
+@media(max-width:700px){.pv-track{grid-template-columns:1fr}.pathway-visual{padding:16px}.pv-lane{min-height:135px}}
+@media(prefers-reduced-motion:reduce){.pv-rain span,.pv-flow,.pv-node{animation:none!important}}
+</style>
+</head>
+<body>
+<nav><div class="wrap nav"><div class="logo">SMART <i>SPONGE CITY</i></div><div class="links"><a href="#dashboard">Dashboard</a><a href="#map">City Map</a><a href="#calculator">Calculator</a><a href="#ai">Sponge AI</a></div></div></nav>
+
+<header class="wrap hero"><div><span class="badge">Science Exhibition • Water Sustainability</span><h1>Don't just drain the rain.<br><span class="green">Manage it.</span></h1><p>An IoT- and AI-assisted urban water management concept for <b>Bamrauli, Prayagraj</b>. Explore capture, infiltration, storage, monitoring and intelligent water routing.</p><a class="btn" href="#dashboard">Explore system</a><a class="btn alt" href="#calculator">Calculator</a></div>
+<div class="card hero-card"><div class="rain"><div class="cloud">☁️</div><div class="drops"><span style="left:25%;animation-delay:.1s">•</span><span style="left:38%;animation-delay:.5s">•</span><span style="left:52%;animation-delay:.9s">•</span><span style="left:67%;animation-delay:1.3s">•</span><span style="left:78%;animation-delay:.3s">•</span></div><div class="flow"><b>RAIN</b><b>RUNOFF</b><b>INFILTRATE</b><b>STORE</b><b>DETENTION</b></div></div></div></header>
+
+<section id="dashboard"><div class="wrap"><h2 class="title">Live Simulation Dashboard</h2><p>Move the rainfall slider. These are educational simulation values, not live municipal sensor readings.</p>
+<div class="dashboard"><div class="card"><div class="control"><label>Simulated rainfall <b id="rv">50 mm</b></label><input id="rain" type="range" min="0" max="150" value="50"></div><div class="grid">
+<div class="card"><div class="small">RUNOFF</div><div class="metric" id="runoff">30 L</div></div><div class="card"><div class="small">INFILTRATION</div><div class="metric" id="infil">12 L</div></div><div class="card"><div class="small">STORAGE</div><div class="metric" id="store">5 L</div></div><div class="card"><div class="small">POND DEPTH</div><div class="metric" id="pond">18 cm</div></div></div><p><span id="status" class="status"><span class="dot"></span>NORMAL</span></p><p id="response">Priority: recharge and normal storage.</p><div class="dash-live"><div class="dash-live-head"><span><i class="live-led"></i> MODEL RUNNING</span><span id="dashClock">SIMULATION</span></div><div class="dash-visual"><div class="rain-cloud">☁</div><div class="rain-stream"></div><div class="rain-drops" id="dashDrops"></div><div class="sensor-node s1">📡</div><div class="sensor-node s2">📡</div><div class="sensor-ring sr1"></div><div class="sensor-ring sr2"></div><div class="data-packet dp1">•</div><div class="data-packet dp2">•</div><div class="water-channel"></div><div class="water-level"><span id="waterFill"></span><b id="dashLevel">45%</b></div><div class="dash-label dl1">RAIN</div><div class="dash-label dl2">SENSE</div><div class="dash-label dl3">STORE</div><div class="dash-label dl4">DETAIN</div><div class="dash-stage">SENSE → ANALYSE → DECIDE → RESPOND</div></div><div class="dash-data"><span>Rain input <b id="dashRain">50 mm</b></span><span>System state <b id="dashState">NORMAL</b></span><span>Model flow <b>ACTIVE</b></span></div></div></div>
+<div class="card"><h3>Sense → Analyse → Decide → Respond</h3><div class="steps"><div class="step"><div class="num">1</div><b>Sense</b><div class="small">Rainfall, soil moisture, level</div></div><div class="step"><div class="num">2</div><b>Analyse</b><div class="small">Compare measurements</div></div><div class="step"><div class="num">3</div><b>Decide</b><div class="small">Classify risk</div></div><div class="step"><div class="num">4</div><b>Respond</b><div class="small">Route water</div></div></div><h3>Risk routing</h3><p><b>NORMAL</b> → Recharge<br><b>CAUTION</b> → Recharge + Storage<br><b>WARNING</b> → Storage + Detention<br><b>CRITICAL</b> → Controlled Overflow</p></div></div></div></section>
+
+<section id="animation"><div class="wrap">
+<h2 class="title"><span class="live-pulse"></span>Animated Water-Flow Prototype</h2>
+<p>Watch the conceptual flow: rainfall → surface movement → rain garden → storage → detention.</p>
+<div class="card">
+<div class="flow-animation">
+<div class="rain-drop" style="left:8%;animation-delay:.1s"></div>
+<div class="rain-drop" style="left:18%;animation-delay:.7s"></div>
+<div class="rain-drop" style="left:29%;animation-delay:.35s"></div>
+<div class="rain-drop" style="left:42%;animation-delay:.9s"></div>
+<div class="rain-drop" style="left:57%;animation-delay:.2s"></div>
+<div class="rain-drop" style="left:71%;animation-delay:.6s"></div>
+<div class="rain-drop" style="left:84%;animation-delay:.45s"></div>
+<div class="flow-ground"></div><div class="flow-road"></div><div class="flow-garden"></div><div class="flow-tank"></div><div class="flow-pond"></div>
+<div class="flow-particle"></div><div class="flow-particle" style="animation-delay:1.15s"></div><div class="flow-particle" style="animation-delay:2.3s"></div>
+<span class="flow-label" style="left:7%;top:15px">RAIN</span>
+<span class="flow-label" style="left:28%;bottom:78px">RAIN GARDEN</span>
+<span class="flow-label" style="right:15%;bottom:100px">STORAGE</span>
+<span class="flow-label" style="right:2%;bottom:70px">DETENTION</span>
+</div>
+<p class="small">Conceptual animation only — it is not a live city sensor feed.</p>
+</div></div></section>
+<section id="ncsc-research" class="card ncsc-research"><h2>🔬 Our NCSC Research Journey</h2><p class="muted">The digital project follows the same scientific logic used in our research.</p><div class="research-grid"><div><b>01 Problem</b><p>Urban rainwater can become surface runoff and create waterlogging.</p></div><div><b>02 Hypothesis</b><p>If water is captured, infiltrated, stored and monitored intelligently, runoff pressure can be reduced.</p></div><div><b>03 Methodology</b><p>Compare conventional and Sponge City pathways using measured parameters and a model.</p></div><div><b>04 Observation</b><p>Record rainfall, runoff, infiltration, storage, pond depth and rate of rise.</p></div><div><b>05 Analysis</b><p>Organise the observations into tables, formulas and graphs to identify patterns.</p></div><div><b>06 Solution</b><p>Use recharge, storage, detention and controlled overflow with monitoring and decision support.</p></div></div></section><section id="locations-guide" class="card"><h2>📍 Observation Locations</h2><p class="muted">Each location answers a different scientific question.</p><div class="research-grid"><div><b>🛣️ Conventional Surface</b><p>How much rainfall becomes runoff?</p></div><div><b>🧱 Permeable Surface</b><p>How much more water can enter the ground?</p></div><div><b>🌿 Rain Garden</b><p>Can runoff be temporarily held and infiltrated?</p></div><div><b>🪨 Recharge Zone</b><p>Can collected water move downward through permeable layers?</p></div><div><b>🛢️ Storage Tank</b><p>How much water is captured for later management?</p></div><div><b>🏞️ Detention Pond</b><p>How does water depth and rate of rise change during rainfall?</p></div></div></section><section id="pond-saturation" class="card"><h2>💧 Pond Saturation & Rate of Rise</h2><p><b>Saturation in our project:</b> the holding area is becoming highly filled, so less storage capacity remains.</p><div class="sat-levels"><div><b>🟢 LOW</b><p>Plenty of storage remains.</p></div><div><b>🟡 MEDIUM</b><p>Continue monitoring.</p></div><div><b>🟠 HIGH</b><p>Available storage is decreasing.</p></div><div><b>🔴 CRITICAL</b><p>Controlled response may be needed.</p></div></div><div class="formula-box"><b>Rate of pond rise = Change in water depth ÷ Change in time</b></div></section><section id="risk-simulation" class="card"><h2>🚨 Real-Life Risk Simulation</h2><p class="muted">Example: a person approaches a road where floodwater is rising.</p><div class="risk-flow"><span>🌧️ Heavy rain</span><b>→</b><span>💧 Water rises</span><b>→</b><span>📡 Sensor detects</span><b>→</b><span>🧠 System analyses</span><b>→</b><span>⚠️ Warning</span><b>→</b><span>🚧 Avoid unsafe zone</span></div><button id="risk-demo" class="primary-btn">▶ Run Risk Simulation</button><div id="risk-output" class="action-box"><b>Status:</b> NORMAL — monitoring conditions.</div><p class="safety-note"><b>Scientific limitation:</b> this prototype demonstrates early risk detection and decision support. It does not guarantee prevention of accidents or represent a deployed emergency system.</p></section>
+
+<section id="safety-sim" class="card safety-section">
+<div class="wrap">
+<h2 class="title">⚠️ Real-Life Accident Prevention Simulations</h2>
+<p class="safety-intro">A Sponge City is not only about moving water. The same monitoring system can help identify dangerous conditions early and warn people before an accident occurs. These are educational, non-graphic simulations.</p>
+<div class="safety-grid">
+<div class="safety-card"><h3>1. Hidden Pond Depth</h3><div class="scene" id="pondScene"><div class="water"></div><div class="depth-zone"></div><div class="depth-scale"><span>0 m</span><span>0.5 m</span><span>1 m+</span></div><div class="depth-readout" id="depthReadout">DEPTH: UNKNOWN</div><div class="danger-label">UNSAFE ZONE</div><div class="warning-flash" id="pondWarning">⚠ STOP • DEPTH UNKNOWN</div><div class="barrier-line"></div><div class="person" id="pondPerson">🚶</div><div class="ripple"></div></div><div class="scenario-controls"><button onclick="runPond(false)">▶ Accident scenario</button><button onclick="runPond(true)">🛡️ Smart warning</button></div><p id="pondText" class="small">Without depth information, a person may enter an unsafe area.</p></div>
+<div class="safety-card"><h3>2. Waterlogged Road</h3><div class="scene accident-road" id="roadScene"><div class="road-water"></div><div class="danger-label">SLIPPERY / FLOODED</div><div class="person road-person" id="roadPerson">🚶</div></div><div class="scenario-controls"><button onclick="runRoad(false)">▶ Show risk</button><button onclick="runRoad(true)">🛡️ Warning system</button></div><p id="roadText" class="small">Rapidly rising water can make a road difficult to judge and unsafe to cross.</p></div>
+<div class="safety-card"><h3>3. Hidden Open Drain</h3><div class="scene drain-scene" id="drainScene"><div class="drain"></div><div class="danger-label">HAZARD AHEAD</div><div class="person drain-person" id="drainPerson">🚶</div></div><div class="scenario-controls"><button onclick="runDrain(false)">▶ Show risk</button><button onclick="runDrain(true)">🛡️ Smart warning</button></div><p id="drainText" class="small">Water and poor visibility can hide drainage hazards from pedestrians.</p></div>
+</div>
+<div class="safety-banner"><b>Smart response:</b> rainfall + water-level + pond-depth + rate-of-rise data → risk classification → warning → safer routing. The prototype supports decision-making; it is not a real emergency-warning system.</div>
+</div></section>
+
+<section id="safety-layer" class="card safety-section"><div class="wrap"><h2 class="title">🛡️ Smart Safety Layer</h2><p>Our proposed system adds a safety layer to the Sponge City concept.</p><div class="mini-flow"><span>🌧️ Rainfall</span><b>→</b><span>📡 Sensors</span><b>→</b><span>📊 Water-level analysis</span><b>→</b><span>⚠️ Risk alert</span><b>→</b><span>🚧 Safe routing</span></div><table class="compare-table"><tr><th>Condition</th><th>System observes</th><th>Suggested response</th></tr><tr><td>Pond level normal</td><td>Depth + rate of rise</td><td>Continue monitoring</td></tr><tr><td>Water rising quickly</td><td>Rate of rise increases</td><td>Issue caution / restrict access</td></tr><tr><td>Unsafe depth</td><td>Depth threshold reached</td><td>Warn people and guide them away</td></tr><tr><td>Overflow risk</td><td>Storage nearly full</td><td>Use planned detention / controlled routing</td></tr></table></div></section>
+
+<section id="before-after" class="card safety-section"><div class="wrap"><h2 class="title">🔄 Conventional vs Smart Sponge City</h2><p>See the difference in the way water and risk are managed.</p><table class="compare-table"><tr><th>Conventional approach</th><th>Smart Sponge approach</th></tr><tr><td>Rainwater quickly becomes surface runoff.</td><td>Water is captured, infiltrated, stored and detained.</td></tr><tr><td>Hazards may be noticed after conditions worsen.</td><td>Sensors can provide earlier information about changing conditions.</td></tr><tr><td>Limited local information.</td><td>Rainfall, soil moisture, level and rate-of-rise data can be combined.</td></tr><tr><td>Mostly reactive response.</td><td>Sense → Analyse → Decide → Respond.</td></tr></table></div></section>
+
+<section id="research-conclusion" class="card safety-section"><div class="wrap"><h2 class="title">📌 What This Project Demonstrates</h2><div class="research-grid"><div><b>Water management</b><p>Reduce uncontrolled runoff by combining infiltration, storage and detention.</p></div><div><b>Risk awareness</b><p>Changing water conditions can be treated as measurable signals rather than only visual observations.</p></div><div><b>Decision support</b><p>A simple rule-based model can convert measurements into NORMAL, CAUTION, WARNING and CRITICAL states.</p></div><div><b>Human safety</b><p>Warnings and safer routing can be included as part of urban water management.</p></div><div><b>Research value</b><p>Field observations can replace the illustrative values in this prototype when genuine readings are collected.</p></div><div><b>Future scope</b><p>Real sensors, GIS, weather data and a secure AI service could make the system more advanced.</p></div></div></div></section>
+<section id="map"><div class="wrap"><h2 class="title">Digital Sponge City Map</h2><p>A conceptual map corresponding to the physical exhibition model.</p><div class="map"><div class="road r1"></div><div class="road r2"></div><div class="zone b z1">🏠 Residential Area</div><div class="zone b z2">🏫 School</div><div class="zone recharge z3">🌱 Rain Garden</div><div class="zone sensor z4">📡 IoT Sensors</div><div class="zone recharge z5">🪨 Recharge Zone<br>Soil → Sand → Gravel → Pebbles</div><div class="zone pond z6">💧 Detention Pond</div><div class="zone recharge z7">♻️ Storage Tank</div><div class="arrow a1">→</div><div class="arrow a2">↓</div><div class="arrow a3">→</div><div class="arrow a4">↓</div></div></div></section>
+
+<section id="calculator"><div class="wrap"><h2 class="title">Smart Water Calculator</h2><p>Use the inputs below to calculate three project quantities. The calculator uses the standard relationships shown on screen and updates the answer safely.</p><div class="card"><div class="calc"><label>Rainfall (mm)<input id="cr" type="number" value="50" min="0" step="any" inputmode="decimal"></label><label>Catchment area (m²)<input id="ca" type="number" value="100" min="0" step="any" inputmode="decimal"></label><label>Runoff coefficient (0–1)<input id="cc" type="number" value="0.60" min="0" max="1" step="0.01" inputmode="decimal"></label><label>Infiltrated volume (L)<input id="iv" type="number" value="120" min="0" step="any" inputmode="decimal"></label><label>Infiltration time (min)<input id="it" type="number" value="20" min="0" step="any" inputmode="decimal"></label><label>Depth change (cm)<input id="dd" type="number" value="6" min="0" step="any" inputmode="decimal"></label><label>Time change (min)<input id="dt" type="number" value="10" min="0" step="any" inputmode="decimal"></label><div class="calc-help">Key conversion: 1 mm rainfall over 1 m² = 1 L of water. Runoff volume = rainfall × catchment area × coefficient.</div></div><div class="calc-actions"><button class="calc-btn primary-btn" id="calc-btn" type="button">Calculate</button><button class="calc-reset" id="calc-reset" type="button">Reset example</button></div><div class="result" id="res" aria-live="polite"><b>Example ready.</b><br>50 mm × 100 m² × 0.60 = 3,000 L estimated runoff.</div><div class="calc-result-grid"><div><span>RUNOFF</span><strong id="calcRunoff">3,000 L</strong></div><div><span>INFILTRATION</span><strong id="calcInfil">6.00 L/min</strong></div><div><span>POND RISE</span><strong id="calcRise">0.60 cm/min</strong></div></div><div class="formula-live"><div><b>Runoff</b><span>rainfall × area × coefficient</span></div><div><b>Infiltration rate</b><span>volume ÷ time</span></div><div><b>Pond rate of rise</b><span>depth change ÷ time change</span></div></div></div></div></section>
+
+<section class="water-pathway-live"><div class="wrap"><h2 class="title">Water Management Pathway — Live Visualisation</h2><p>Animated representation of how rainfall is managed through conventional drainage and Sponge City measures.</p><div class="pathway-visual"><div class="pv-rain"><span>🌧️</span><span>💧</span><span>💧</span><span>💧</span></div><div class="pv-track"><div class="pv-lane conventional-lane"><b>CONVENTIONAL DRAINAGE</b><span>Rainfall → Surface runoff → Drainage</span><div class="pv-flow fast-flow"></div></div><div class="pv-lane sponge-lane"><b>SPONGE CITY</b><span>Capture → Infiltrate → Store → Detain</span><div class="pv-flow slow-flow"></div><div class="pv-node n1">CAPTURE</div><div class="pv-node n2">INFILTRATE</div><div class="pv-node n3">STORE</div><div class="pv-node n4">DETAIN</div></div></div></div><div class="notice" style="margin-top:13px"><b>Data integrity:</b> This is a conceptual animation for exhibition demonstration, not a live municipal monitoring system.</div></div></section>
+
+<section id="ai"><div class="wrap"><h2 class="title">SPONGE AI — Project Assistant</h2><p>Ask naturally. This upgraded local assistant recognises many project-related questions and gives a fuller explanation instead of only one-line replies.</p><div class="card chat chat-wide"><div class="suggestions"><button onclick="quickAsk('What is a Sponge City?')">What is a Sponge City?</button><button onclick="quickAsk('Explain infiltration in simple words')">Explain infiltration</button><button onclick="quickAsk('How can this system prevent accidents?')">Accident prevention</button><button onclick="quickAsk('What sensors can be used?')">Sensors</button><button onclick="quickAsk('Explain the research methodology')">Research method</button></div><div class="messages" id="msgs"><div class="msg bot"><b>Hi! I’m Sponge AI 🌧️</b><br>I can explain the project, water management, infiltration, runoff, storage, detention, sensors, risk states, accidents, research methodology, calculator concepts and future scope. Ask in your own words.</div></div><div class="chatbar"><input id="q" placeholder="Ask anything about the Smart Sponge City project..." onkeydown="if(event.key==='Enter')ask()"><button onclick="ask()">Ask</button></div></div></div></section>
+
+<section><div class="wrap"><h2 class="title">Project Framework</h2><div class="grid"><div class="card"><h3>Problem</h3><p>Impervious surfaces can increase runoff and drainage pressure while reducing natural infiltration.</p></div><div class="card"><h3>Solution</h3><p>Permeable surfaces, rain gardens, recharge areas, storage and detention manage water closer to where rain falls.</p></div><div class="card"><h3>Smart Layer</h3><p>IoT measurements can monitor rainfall, soil moisture, water level, pond depth and rate of rise.</p></div><div class="card"><h3>Future</h3><p>Weather forecasting, GIS mapping, groundwater and water-quality monitoring, automation and networked stations.</p></div></div><h3>Core flow</h3><p style="font-size:18px"><b>Rainfall → Runoff/Infiltration → Storage/Recharge → Monitoring → Risk Assessment → Intelligent Response</b></p></div></section>
+<footer>SMART SPONGE CITY • IoT & AI-Assisted Urban Water Management System • Bamrauli, Prayagraj<br><small>Educational prototype • Not a real-time municipal control system</small></footer>
+
+<script>
+const rain=document.getElementById('rain'),rv=document.getElementById('rv'),runoff=document.getElementById('runoff'),infil=document.getElementById('infil'),store=document.getElementById('store'),pond=document.getElementById('pond'),status=document.getElementById('status'),response=document.getElementById('response');
+const cr=document.getElementById('cr'),ca=document.getElementById('ca'),cc=document.getElementById('cc'),iv=document.getElementById('iv'),it=document.getElementById('it'),dd=document.getElementById('dd'),dt=document.getElementById('dt'),res=document.getElementById('res'),calcBtn=document.getElementById('calc-btn');
+function flash(el,cls='metric-flash'){el.classList.remove(cls);void el.offsetWidth;el.classList.add(cls)}
+function update(){let r=Math.max(0,Number(rain.value)||0);rv.textContent=r+' mm';runoff.textContent=Math.round(r*.60)+' L';infil.textContent=Math.round(r*.24)+' L';store.textContent=Math.round(r*.10)+' L';pond.textContent=Math.round(10+r*.34)+' cm';[runoff,infil,store,pond].forEach(el=>flash(el));let s='NORMAL',t='Priority: recharge and normal storage.';if(r>=110){s='CRITICAL';t='Priority: controlled overflow after storage and detention capacity is approached.'}else if(r>=80){s='WARNING';t='Priority: storage + detention; monitor pond depth and rate of rise.'}else if(r>=45){s='CAUTION';t='Priority: recharge + storage; continue monitoring.'}status.className='status '+s.toLowerCase()+' flash';status.innerHTML='<span class="dot"></span>'+s;response.textContent=t;chartDraw(r)}
+rain.addEventListener('input',update);
+function readNumber(el){return el.value.trim()===''?NaN:Number(el.value)}
+function calc(){const values=[cr,ca,cc,iv,it,dd,dt].map(readNumber);const [r,a,c,ivv,itt,dep,tm]=values;[cr,ca,cc,iv,it,dd,dt].forEach((el,i)=>el.classList.toggle('invalid',Number.isNaN(values[i])||values[i]<0));cc.classList.toggle('invalid',Number.isNaN(c)||c<0||c>1);if(values.some(Number.isNaN)||r<0||a<0||c<0||c>1||ivv<0||itt<0||dep<0||tm<0){res.innerHTML='<b>Please enter valid values.</b><br>Use non-negative numbers and keep the runoff coefficient between 0 and 1.';flash(res,'updated');return}const runoffVol=r*a*c;const infiltrationRate=itt>0?ivv/itt:null;const pondRate=tm>0?dep/tm:null;res.innerHTML=`Estimated runoff volume: <b>${runoffVol.toFixed(1)} L</b><br>Infiltration rate: <b>${infiltrationRate===null?'—':infiltrationRate.toFixed(2)+' L/min'}</b><br>Pond rate of rise: <b>${pondRate===null?'—':pondRate.toFixed(2)+' cm/min'}</b>`;flash(res,'updated')}
+calcBtn.addEventListener('click',calc);
+[cr,ca,cc,iv,it,dd,dt].forEach(el=>el.addEventListener('input',calc));
+calc();update();
+let chartAnim=0;function chartDraw(r){const c=document.getElementById('chart'),x=c.getContext('2d'),w=c.width,h=c.height;const labs=['Runoff','Infiltration','Stored','Detention'];const a=[r*.78,r*.08,r*.06,r*.08],b=[r*.38,r*.30,r*.18,r*.14];const max=Math.max(...a,...b,1);x.clearRect(0,0,w,h);x.fillStyle='#f8fbfd';x.fillRect(0,0,w,h);x.font='600 16px Arial';x.fillStyle='#10243a';x.fillText('Water pathway comparison',34,32);x.font='13px Arial';x.fillStyle='#5b7082';x.fillText('Illustrative simulation — higher bar = larger share/value',34,53);const left=190,right=35,top=78,row=64,barW=w-left-right;for(let i=0;i<5;i++){let yy=top+i*row;x.strokeStyle='#dbe8ef';x.lineWidth=1;x.beginPath();x.moveTo(left,yy);x.lineTo(w-right,yy);x.stroke()}labs.forEach((n,i)=>{let y=top+22+i*row;let aw=Math.max(8,(a[i]/max)*barW),bw=Math.max(8,(b[i]/max)*barW);x.fillStyle='#163f55';x.font='700 14px Arial';x.fillText(n,34,y+5);x.fillStyle='#e7eef3';x.fillRect(left,y-25,barW,18);x.fillStyle='#567b69';x.fillRect(left,y-25,aw,18);x.fillStyle='#e7f6fb';x.fillRect(left,y+3,barW,18);x.fillStyle='#159ac4';x.fillRect(left,y+3,bw,18);x.fillStyle='#10243a';x.font='600 12px Arial';x.fillText(Math.round(a[i])+' mm',Math.min(left+aw+8,w-58),y-11);x.fillText(Math.round(b[i])+' mm',Math.min(left+bw+8,w-58),y+17)});x.fillStyle='#567b69';x.fillRect(w-300,26,12,12);x.fillStyle='#10243a';x.font='600 12px Arial';x.fillText('Conventional',w-282,37);x.fillStyle='#159ac4';x.fillRect(w-175,26,12,12);x.fillStyle='#10243a';x.fillText('Sponge City',w-157,37);x.fillStyle='#6d8190';x.font='11px Arial';x.fillText('0',left-5,h-18);x.fillText(Math.round(max),w-right-20,h-18);x.globalAlpha=.7;x.strokeStyle='#159ac4';x.beginPath();x.moveTo(left,h-32);x.lineTo(w-right,h-32);x.stroke();x.globalAlpha=1}
+function quickAsk(q){document.getElementById('q').value=q;ask()}
+const aiKnowledge=[
+{keys:['sponge city','sponge cities','what is sponge'],ans:'A Sponge City is an urban water-management approach that tries to absorb, store, infiltrate, reuse and safely release rainwater instead of sending all of it away as fast surface runoff. In this project, the main pathways are rain gardens, permeable surfaces, recharge zones, storage and detention. The “smart” layer adds monitoring and decision support.'},
+{keys:['infiltration','infiltrate','recharge'],ans:'Infiltration is the movement of water from the surface into permeable soil or other ground layers. In our model, a recharge zone can contain layers such as soil, sand, gravel and pebbles. The purpose is to allow water to move downward rather than remain entirely as surface runoff.'},
+{keys:['runoff','surface water'],ans:'Runoff is rainfall that flows across a surface instead of entering the ground. Impervious surfaces such as many roads and paved areas can increase runoff. A Sponge City tries to slow, capture and redirect some of that water through green infrastructure, infiltration and storage.'},
+{keys:['storage tank','storage'],ans:'Storage temporarily holds collected rainwater so the system does not have to release all of it immediately. The stored water can later be managed, reused where appropriate, or routed through planned pathways. In the exhibition, storage is one part of the capture → analyse → response chain.'},
+{keys:['detention pond','pond','detention'],ans:'A detention pond temporarily holds excess water and reduces the speed at which water moves through the system. In this prototype, pond depth and rate of rise are treated as useful indicators. A rapidly rising level can move the system toward a warning state.'},
+{keys:['sensor','iot','internet of things'],ans:'Possible sensors for the concept include rainfall sensors, soil-moisture sensors, water-level or ultrasonic depth sensors, and sensors used to estimate the rate of water-level rise. The prototype does not contain real municipal sensors; its values are educational simulations.'},
+{keys:['warning','critical','caution','normal','risk'],ans:'The prototype uses four educational states. NORMAL means conditions are relatively stable. CAUTION suggests recharge and storage with continued monitoring. WARNING prioritises storage and detention while watching pond depth and rate of rise. CRITICAL indicates that the planned storage/detention capacity is being approached and controlled overflow or other planned response may be required.'},
+{keys:['accident','safety','fall','danger','prevent'],ans:'The safety idea is to detect changing water conditions before they become a visible hazard. For example, if pond depth is unknown, water is rising rapidly, or a road becomes waterlogged, sensors can provide information for a warning and safer routing. This prototype demonstrates decision support only; it cannot guarantee accident prevention.'},
+{keys:['research','methodology','hypothesis','observation'],ans:'The research logic is: identify the problem → form a hypothesis → collect observations → organise measurements → analyse patterns → propose a solution. Useful observations include rainfall, runoff, infiltration, storage, pond depth and rate of rise. The website labels its simulated values clearly so they are not confused with real field measurements.'},
+{keys:['calculator','formula','rate of rise'],ans:'The calculator demonstrates three concepts: estimated runoff volume = rainfall × catchment area × runoff coefficient; infiltration rate = infiltrated volume ÷ infiltration time; and pond rate of rise = change in water depth ÷ change in time. These are educational calculations for the exhibition model.'},
+{keys:['prayagraj','bamrauli','location'],ans:'The project is presented as a Smart Sponge City concept for Bamrauli, Prayagraj. The digital model is designed to connect urban water management with local observation, while keeping simulated values clearly labelled as simulations.'},
+{keys:['future','scope','improve','advanced'],ans:'Future development could add genuine field sensors, GIS mapping, weather data, water-quality monitoring, groundwater observations, secure cloud storage, automated alerts and a properly hosted AI service. Those additions would require real hardware, data validation and appropriate safety testing.'},
+{keys:['ai','chatbot'],ans:'This Sponge AI is a local educational assistant built into the webpage. It can recognise a broad set of project topics and explain them in more detail. A truly general AI that can answer arbitrary questions would require connecting the website to an AI model through a secure backend; an API key should never be placed directly in public HTML/JavaScript.'}
+];
+function aiAnswer(q){let l=q.toLowerCase();let best=null,score=0;for(const item of aiKnowledge){let sc=item.keys.reduce((n,k)=>n+(l.includes(k)?1:0),0);if(sc>score){score=sc;best=item}}if(best)return best.ans;return 'I can help with this if it is connected to the Smart Sponge City project. Try asking about the Sponge City concept, runoff, infiltration, storage, detention ponds, sensors, risk states, accident prevention, research methodology, calculations, or future scope. If you want a genuinely general-purpose AI that answers questions outside this project, the website will need a secure server-side AI connection rather than only browser JavaScript.'}
+function ask(){let inp=document.getElementById('q'),q=inp.value.trim();if(!q)return;msgs.innerHTML+=`<div class="msg user">${safe(q)}</div>`;let typing=document.createElement('div');typing.className='msg bot typing';typing.textContent='Sponge AI is thinking…';msgs.appendChild(typing);msgs.scrollTop=msgs.scrollHeight;setTimeout(()=>{typing.remove();msgs.innerHTML+=`<div class="msg bot">${safe(aiAnswer(q))}<div class="source-note">Educational prototype response • not a live sensor or emergency service</div></div>`;msgs.scrollTop=msgs.scrollHeight},220);inp.value=''}
+function safe(s){return s.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]) )}
+
+/* === Subtle interactive polish === */
+const animatedSteps=document.querySelectorAll('.steps .step');
+if(animatedSteps.length){
+ let current=0;
+ setInterval(()=>{
+   animatedSteps.forEach((el,i)=>el.classList.toggle('active-step',i===current));
+   current=(current+1)%animatedSteps.length;
+ },1100);
+}
+const originalUpdate=update;
+update=function(){
+ originalUpdate();
+ const st=document.getElementById('status');
+ if(st){st.classList.remove('flash');void st.offsetWidth;st.classList.add('flash');}
+};
+update();
+
+calc();
+</script>
+<script>(function(){const b=document.getElementById("risk-demo"),o=document.getElementById("risk-output");if(!b||!o)return;b.onclick=()=>{o.innerHTML="<b>Status:</b> WARNING ⚠️ — water level is rising rapidly. Recommended response: warn users away from the unsafe zone and route excess water toward planned detention/storage pathways.";o.style.animation="pulseRisk .8s ease";setTimeout(()=>o.style.animation="",900)}})();</script><style>@keyframes pulseRisk{50%{transform:scale(1.02);opacity:.75}}</style><script>
+function resetPerson(id){const el=document.getElementById(id);if(!el)return null;el.className=el.className.replace(/\bwalk\b|\bnear-hazard\b|\bstopped\b|\bapproach\b|\bscan\b/g,'').trim();void el.offsetWidth;return el}
+function runPond(safeMode){const scene=document.getElementById('pondScene'),p=resetPerson('pondPerson'),read=document.getElementById('depthReadout'),warn=document.getElementById('pondWarning'),text=document.getElementById('pondText');if(!scene||!p)return;scene.classList.remove('active','safe','scan');warn.textContent='⚠ STOP • DEPTH UNKNOWN';read.textContent='DEPTH: UNKNOWN';if(safeMode){scene.classList.add('safe','scan');read.textContent='DEPTH: 1.02 m • SENSOR VERIFIED';warn.textContent='🛡️ WARNING ACTIVE • ENTRY BLOCKED';text.textContent='Sensor scan → depth verified → warning activated → safe route selected. The person stops before reaching the unsafe water edge.';return}scene.classList.add('active');p.classList.add('approach');text.textContent='Live near-miss simulation: the person approaches an area where the water depth is visually unclear. The system then highlights the hazard point—no fall or injury is shown.';setTimeout(()=>{read.textContent='DEPTH: UNKNOWN';p.classList.add('near-hazard')},1550);setTimeout(()=>{warn.textContent='⚠ HAZARD IDENTIFIED • STOP';p.classList.add('stopped');scene.classList.add('scan')},2250)}
+function runRoad(safeMode){const scene=document.getElementById('roadScene'),p=resetPerson('roadPerson');if(!scene||!p)return;scene.classList.remove('safe','scan');if(safeMode){scene.classList.add('safe','scan');document.getElementById('roadText').textContent='Sensor trend: water is rising. The route is marked unsafe and the person is redirected before entering the flooded section.';return}p.classList.add('approach');document.getElementById('roadText').textContent='Live near-miss simulation: standing water reduces visibility of road conditions. The person approaches the marked warning point and stops.';setTimeout(()=>p.classList.add('near-hazard'),1450);setTimeout(()=>{p.classList.add('stopped');scene.classList.add('scan')},2050)}
+function runDrain(safeMode){const scene=document.getElementById('drainScene'),p=resetPerson('drainPerson');if(!scene||!p)return;scene.classList.remove('safe','scan');if(safeMode){scene.classList.add('safe','scan');document.getElementById('drainText').textContent='Mapped hazard detected. The warning layer marks the drainage opening and redirects the person before the unsafe point.';return}p.classList.add('approach');document.getElementById('drainText').textContent='Live near-miss simulation: a drainage opening is difficult to judge. The person approaches the marked point and stops—no injury is shown.';setTimeout(()=>p.classList.add('near-hazard'),1350);setTimeout(()=>{p.classList.add('stopped');scene.classList.add('scan')},1900)}
+</script>
+<style>
+/* === NCSC EXPANSION SLIDES === */
+.extra-slide{padding:68px 0}.slide-head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:24px}.kicker{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#a8dfb0;font-weight:800}.big-title{font-size:clamp(32px,5vw,54px);margin:8px 0 10px;line-height:1}.three-col{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.four-col{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.info-card{background:#0e211c;border:1px solid #285044;border-radius:18px;padding:22px}.info-card h3{margin:8px 0}.icon-big{font-size:34px}.timeline{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.timeline .t{padding:18px;border:1px solid #285044;border-radius:15px;background:#0e211c;position:relative}.timeline .t b{display:block;color:#a8dfb0;margin-bottom:8px}.bar{height:10px;background:#17382b;border-radius:10px;overflow:hidden;margin:10px 0}.bar i{display:block;height:100%;background:#43b8e8;border-radius:10px}.compare-table{width:100%;border-collapse:collapse;background:#0e211c;border-radius:15px;overflow:hidden}.compare-table th,.compare-table td{padding:14px;border-bottom:1px solid #285044;text-align:left}.compare-table th{color:#a8dfb0}.route-demo{display:grid;grid-template-columns:1fr 1fr;gap:16px}.route-box{min-height:250px;background:#0e211c;border:1px solid #285044;border-radius:18px;padding:20px}.route-line{display:flex;align-items:center;justify-content:space-between;gap:7px;margin:30px 0}.route-node{padding:12px 10px;text-align:center;border:1px solid #386354;border-radius:12px;min-width:75px;font-size:12px}.arrow2{color:#43b8e8;font-size:22px}.stat-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:18px}.stat-strip div{padding:15px;border-radius:13px;background:#102d24;text-align:center}.stat-strip strong{display:block;font-size:25px;color:#a8dfb0}.faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.faq{border:1px solid #285044;background:#0e211c;border-radius:14px;padding:17px}.faq b{color:#a8dfb0}.sources-note{font-size:12px;color:#a9beb6;border-left:3px solid #e7c76b;padding-left:12px}.demo-btn{margin-top:12px}.pulse-box{animation:softPulse 2.4s infinite}@keyframes softPulse{50%{box-shadow:0 0 24px #43b8e822}}
+@media(max-width:760px){.three-col,.four-col,.timeline,.route-demo,.faq-grid{grid-template-columns:1fr}.stat-strip{grid-template-columns:1fr 1fr}.slide-head{display:block}}
+</style>
+
+<section class="extra-slide" id="real-problem">
+ <div class="wrap">
+  <div class="slide-head"><div><div class="kicker">Slide 01 • Why this matters</div><h2 class="big-title">When water becomes a safety problem</h2><p>Urban waterlogging is not only a drainage issue. When depth, flow and hazards are difficult to judge, ordinary movement around roads and ponds can become risky.</p></div><span class="badge">Risk → Detection → Response</span></div>
+  <div class="three-col">
+   <div class="info-card"><div class="icon-big">🌧️</div><h3>Heavy rainfall</h3><p>Rainfall can generate rapid surface runoff, especially where surfaces are less permeable.</p></div>
+   <div class="info-card"><div class="icon-big">💧</div><h3>Hidden conditions</h3><p>Water may hide changes in depth, open drains, slippery surfaces or unsafe edges.</p></div>
+   <div class="info-card"><div class="icon-big">⚠️</div><h3>Delayed response</h3><p>If people do not receive an early warning, they may unknowingly enter an unsafe area.</p></div>
+  </div>
+  <div class="stat-strip"><div><strong>01</strong>Observe</div><div><strong>02</strong>Measure</div><div><strong>03</strong>Analyse</div><div><strong>04</strong>Warn</div><div><strong>05</strong>Respond</div></div>
+ </div>
+</section>
+
+<section class="extra-slide" id="accident-scenarios">
+ <div class="wrap">
+  <div class="kicker">Slide 02 • Safety scenarios</div><h2 class="big-title">Three situations. One smart idea.</h2><p>These are conceptual safety demonstrations for the exhibition. They show why detection and early warnings matter; they do not reproduce real accidents.</p>
+  <div class="three-col">
+   <div class="info-card pulse-box"><div class="icon-big">🏞️</div><h3>Unknown pond depth</h3><p>A person approaches a pond without knowing the depth or whether the edge is safe.</p><p><b>Smart response:</b> level/depth monitoring + visible warning + restricted unsafe zone.</p></div>
+   <div class="info-card"><div class="icon-big">🛣️</div><h3>Waterlogged road</h3><p>Standing water can hide road conditions and make a route difficult to assess.</p><p><b>Smart response:</b> water-level and rate-of-rise monitoring + alternate-route alert.</p></div>
+   <div class="info-card"><div class="icon-big">🚧</div><h3>Hidden drainage hazard</h3><p>Poor visibility can make a drainage opening or damaged section difficult to notice.</p><p><b>Smart response:</b> hazard mapping + detection + warning before the unsafe point.</p></div>
+  </div>
+ </div>
+</section>
+
+<section class="extra-slide" id="system-logic">
+ <div class="wrap">
+  <div class="kicker">Slide 03 • Smart decision system</div><h2 class="big-title">From rainfall to a safer decision</h2><div class="route-demo">
+   <div class="route-box"><h3>Conventional pathway</h3><div class="route-line"><span class="route-node">🌧️ Rain</span><span class="arrow2">→</span><span class="route-node">💧 Runoff</span><span class="arrow2">→</span><span class="route-node">🚶 Person</span><span class="arrow2">→</span><span class="route-node">⚠️ Risk</span></div><p>Limited information can mean that a person sees the hazard only after reaching it.</p></div>
+   <div class="route-box"><h3>Smart Sponge pathway</h3><div class="route-line"><span class="route-node">🌧️ Rain</span><span class="arrow2">→</span><span class="route-node">📡 Sense</span><span class="arrow2">→</span><span class="route-node">🧠 Analyse</span><span class="arrow2">→</span><span class="route-node">🚨 Warn</span></div><p>Measurements support earlier decisions: recharge, store, detain, warn or redirect.</p></div>
+  </div>
+  <div class="info-card" style="margin-top:16px"><h3>Decision rule</h3><p><b>Normal:</b> recharge and normal storage → <b>Caution:</b> recharge + storage → <b>Warning:</b> storage + detention → <b>Critical:</b> controlled overflow and safety warning.</p></div>
+ </div>
+</section>
+
+<section class="extra-slide" id="research-method">
+ <div class="wrap">
+  <div class="kicker">Slide 04 • Research methodology</div><h2 class="big-title">Experimental Testing Methodology</h2><p>The proposed system can be evaluated through structured observation, measurement, comparison and analysis of the identified water-management components.</p>
+  <div class="timeline">
+   <div class="t"><b>01 • Survey</b>Identify conventional surfaces, pond, garden, recharge and storage locations.</div>
+   <div class="t"><b>02 • Record</b>Note rainfall, water depth, runoff behaviour and time changes.</div>
+   <div class="t"><b>03 • Compare</b>Compare conventional and Sponge City pathways.</div>
+   <div class="t"><b>04 • Analyse</b>Use formulas such as rate of pond rise = depth change ÷ time change.</div>
+   <div class="t"><b>05 • Conclude</b>Identify where capture, infiltration, storage or warning can improve the system.</div>
+  </div>
+  <div class="info-card" style="margin-top:16px"><h3>Observation parameters</h3><div class="four-col"><div>Rainfall<br><div class="bar"><i style="width:72%"></i></div></div><div>Runoff<br><div class="bar"><i style="width:55%"></i></div></div><div>Infiltration<br><div class="bar"><i style="width:38%"></i></div></div><div>Water level<br><div class="bar"><i style="width:64%"></i></div></div></div><p class="sources-note">The bars above are visual placeholders for the exhibition interface, not measured field data.</p></div>
+ </div>
+</section>
+
+<section class="extra-slide" id="comparison">
+ <div class="wrap">
+  <div class="kicker">Slide 05 • Comparison</div><h2 class="big-title">Drain the water — or manage the water?</h2>
+  <table class="compare-table"><tr><th>Feature</th><th>Conventional approach</th><th>Sponge City approach</th></tr><tr><td>Rainfall</td><td>Move water away quickly</td><td>Capture and manage closer to where rain falls</td></tr><tr><td>Surface</td><td>More impervious pathways</td><td>Permeable and green infrastructure where suitable</td></tr><tr><td>Storage</td><td>Limited local storage</td><td>Tank + detention + temporary holding</td></tr><tr><td>Groundwater</td><td>Less emphasis on infiltration</td><td>Recharge zones can support infiltration</td></tr><tr><td>Monitoring</td><td>Primarily manual/central observation</td><td>Conceptual sensor-based monitoring</td></tr><tr><td>Safety</td><td>Hazard may be noticed late</td><td>Early warning can support safer decisions</td></tr></table>
+ </div>
+</section>
+
+<section class="extra-slide" id="future-scope">
+ <div class="wrap">
+  <div class="kicker">Slide 06 • Future scope</div><h2 class="big-title">Where can this project go next?</h2>
+  <div class="four-col">
+   <div class="info-card"><div class="icon-big">📡</div><h3>More sensors</h3><p>Rain gauges, soil-moisture sensors, water-level sensors and flow measurements.</p></div>
+   <div class="info-card"><div class="icon-big">🗺️</div><h3>GIS mapping</h3><p>Map low-lying zones, drainage pathways, recharge areas and repeated waterlogging points.</p></div>
+   <div class="info-card"><div class="icon-big">🤖</div><h3>Prediction</h3><p>Combine rainfall forecasts with observed conditions to estimate changing risk.</p></div>
+   <div class="info-card"><div class="icon-big">🏙️</div><h3>Real deployment</h3><p>Connect multiple monitoring stations to a dashboard for municipal decision support.</p></div>
+  </div>
+  <div class="info-card" style="margin-top:16px"><h3>Final message</h3><p style="font-size:18px;color:#f5f0df">A sponge city is not simply about collecting rainwater. It is about <b>observing water, understanding its movement, managing it locally, and making safer decisions before a small hazard becomes a larger problem.</b></p></div>
+ </div>
+</section>
+
+
+<script>
+// Add the expanded sections to the navigation without changing the original navigation markup.
+(function(){
+ const nav=document.querySelector('.links');
+ if(!nav)return;
+ [['#real-problem','Problem'],['#accident-scenarios','Safety'],['#system-logic','Smart Logic'],['#research-method','Research'],['#future-scope','Future']].forEach(x=>{const a=document.createElement('a');a.href=x[0];a.textContent=x[1];nav.appendChild(a)});
+})();
+</script>
+
+<style id="final-interaction-polish">
+/* Final exhibition motion: real visual feedback, not decorative shimmer */
+.dash-live{margin-top:16px;border:1px solid #285044;border-radius:16px;background:linear-gradient(180deg,#0c201a,#091713);padding:12px;overflow:hidden}
+.dash-live-head,.dash-data{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#9fb8ad}.live-led{display:inline-block;width:8px;height:8px;border-radius:50%;background:#7fe6a0;box-shadow:0 0 10px #7fe6a0;animation:ledBlink 1.1s infinite}.dash-visual{height:145px;margin-top:10px;border-radius:12px;position:relative;overflow:hidden;background:linear-gradient(180deg,#102d38 0 48%,#163a2b 48% 100%);border:1px solid #285044}.dash-visual:before{content:"";position:absolute;left:0;right:0;top:52%;height:2px;background:#3e6e5c;box-shadow:0 28px 0 #3e6e5c,0 56px 0 #3e6e5c;opacity:.35}.rain-cloud{position:absolute;top:13px;left:10%;font-size:34px;animation:cloudDrift 6s ease-in-out infinite}.rain-stream{position:absolute;top:49px;left:14%;width:90px;height:60px;background:repeating-linear-gradient(100deg,transparent 0 9px,#8bdcf5 10px 12px,transparent 13px 20px);opacity:.7;animation:rainMove .8s linear infinite}.sensor-node{position:absolute;font-size:17px;filter:drop-shadow(0 0 7px #75d9ff);animation:sensorPulse 1.8s ease-in-out infinite}.s1{left:43%;top:69px}.s2{left:61%;top:88px;animation-delay:.6s}.water-channel{position:absolute;left:33%;right:7%;bottom:19px;height:14px;background:linear-gradient(90deg,#2d90ad,#58c9e5,#2d90ad);border-radius:20px;animation:waterFlow 1.6s linear infinite}.water-level{position:absolute;right:8%;bottom:32px;width:74px;height:70px;border:2px solid #6fd9ee;border-radius:8px 8px 12px 12px;overflow:hidden;background:#0a1b20}.water-level span{position:absolute;left:0;right:0;bottom:0;height:45%;background:linear-gradient(180deg,#5bd4ed,#277f9c);animation:levelBreathe 2.2s ease-in-out infinite}.dash-label{position:absolute;font-size:9px;font-weight:800;letter-spacing:.12em;color:#d8eee8}.dl1{left:10%;bottom:15px}.dl2{left:41%;bottom:15px}.dl3{right:19%;bottom:112px}.dl4{right:6%;bottom:15px}.dash-data{margin-top:10px}.dash-data b{color:#e7f4ed}.steps .step.active-step{transform:translateY(-4px) scale(1.02);border-color:#5ec7e8;box-shadow:0 0 18px #43b8e826}
+.calc-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}.calc-reset{padding:10px 13px;border:1px solid #386354;border-radius:10px;background:#102d24;color:#dfece7;cursor:pointer}.formula-live{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:14px}.formula-live>div{padding:11px;border:1px solid #285044;border-radius:11px;background:#0d211b}.formula-live b{display:block;color:#a8dfb0}.formula-live span{font-size:11px;color:#a9beb6}.result strong,.result b{color:#dff7e8}
+/* Depth/safety scene: show a believable near-miss and warning system rather than a graphic fall */
+.depth-scale{position:absolute;right:12px;top:22px;bottom:32px;width:5px;background:linear-gradient(#8cecff 0 25%,#e7c76b 25% 55%,#df7b7b 55% 100%);border-radius:8px;opacity:.8}.depth-scale span{position:absolute;right:9px;font-size:8px;color:#e9f4ef;white-space:nowrap}.depth-scale span:nth-child(1){top:-3px}.depth-scale span:nth-child(2){top:27%}.depth-scale span:nth-child(3){bottom:-3px}.depth-readout{position:absolute;left:12px;top:12px;padding:6px 8px;border-radius:8px;background:#091714d9;border:1px solid #5b8d7c;font-size:9px;font-weight:800;letter-spacing:.06em}.warning-flash{position:absolute;left:50%;top:18px;transform:translateX(-50%);padding:7px 10px;border-radius:9px;background:#5a281f;color:#ffe4d5;border:1px solid #df8d72;font-size:10px;font-weight:900;opacity:0;white-space:nowrap;z-index:5}.scene.active .warning-flash{opacity:1;animation:warningBlink .7s steps(2,end) 3}.scene.safe .warning-flash{opacity:1;background:#17442f;border-color:#72d59b;color:#dcffe9;animation:safeGlow 1.4s ease-in-out infinite}.barrier-line{position:absolute;right:23%;bottom:29%;width:5px;height:52px;background:#e7c76b;transform:rotate(12deg);opacity:0;box-shadow:12px 0 0 #e7c76b}.scene.safe .barrier-line{opacity:1;animation:barrierIn .45s ease-out}.person.stopped{animation:personStop .35s ease-out forwards}.person.near-hazard{filter:drop-shadow(0 0 7px #e7c76b)}.scene.safe .person{left:17%;animation:safeStop .5s ease-out forwards}.scene.safe .ripple{opacity:.25}.accident-road.safe .road-water,.drain-scene.safe .drain{box-shadow:0 0 0 2px #e7c76b,0 0 18px #e7c76b66}.accident-road.safe .road-person,.drain-scene.safe .drain-person{left:17%;transform:none}.scene.safe .danger-label{background:#17442f;color:#dfffea;border-color:#72d59b}
+@keyframes ledBlink{50%{opacity:.35;transform:scale(.75)}}@keyframes cloudDrift{50%{transform:translateX(22px)}}@keyframes rainMove{to{background-position:0 24px}}@keyframes sensorPulse{50%{transform:scale(1.22);filter:drop-shadow(0 0 13px #75d9ff)}}@keyframes waterFlow{to{background-position:80px 0}}@keyframes levelBreathe{50%{height:58%}}@keyframes warningBlink{50%{transform:translateX(-50%) scale(1.04);filter:brightness(1.35)}}@keyframes safeGlow{50%{box-shadow:0 0 18px #72d59b55}}@keyframes barrierIn{from{opacity:0;transform:rotate(12deg) scaleY(.4)}to{opacity:1;transform:rotate(12deg) scaleY(1)}}@keyframes personStop{to{transform:translateX(0) rotate(0deg)}}@keyframes safeStop{to{transform:translateX(0)}}
+@media(max-width:760px){.formula-live{grid-template-columns:1fr}.dash-visual{height:125px}.warning-flash{font-size:8px;max-width:78%;text-align:center}.depth-scale{right:8px}}
+</style>
+<script>
+(function(){
+  function num(id){const el=document.getElementById(id);return el?Number(el.value):NaN}
+  function setInvalid(el,bad){if(el)el.classList.toggle('invalid',bad)}
+  function calculateFinal(){
+    const ids=['cr','ca','cc','iv','it','dd','dt']; const vals=ids.map(num); const [r,a,c,iv,it,dep,tm]=vals;
+    const els=ids.map(id=>document.getElementById(id));
+    els.forEach((el,i)=>setInvalid(el,!Number.isFinite(vals[i])||vals[i]<0));
+    setInvalid(document.getElementById('cc'),!Number.isFinite(c)||c<0||c>1);
+    const bad=!Number.isFinite(r)||!Number.isFinite(a)||!Number.isFinite(c)||c<0||c>1||!Number.isFinite(iv)||!Number.isFinite(it)||!Number.isFinite(dep)||!Number.isFinite(tm)||[r,a,iv,it,dep,tm].some(v=>v<0);
+    const out=document.getElementById('res'); if(!out)return;
+    if(bad){out.innerHTML='<b>Check the highlighted inputs.</b><br>Use numbers ≥ 0 and keep the runoff coefficient between 0 and 1.';return}
+    const runoff=r*a*c, infil=it>0?iv/it:null, rise=tm>0?dep/tm:null;
+    out.innerHTML='<b>Estimated runoff volume:</b> '+runoff.toLocaleString(undefined,{maximumFractionDigits:2})+' L ('+(runoff/1000).toFixed(3)+' m³)<br><b>Infiltration rate:</b> '+(infil===null?'—':infil.toFixed(2)+' L/min')+'<br><b>Pond rate of rise:</b> '+(rise===null?'—':rise.toFixed(2)+' cm/min');
+    out.classList.remove('updated');void out.offsetWidth;out.classList.add('updated');
+  }
+  function resetFinal(){[['cr',50],['ca',100],['cc',.60],['iv',120],['it',20],['dd',6],['dt',10]].forEach(([id,v])=>{const e=document.getElementById(id);if(e)e.value=v});calculateFinal()}
+  function bind(){
+    const b=document.getElementById('calc-btn'),reset=document.getElementById('calc-reset');
+    if(b)b.onclick=calculateFinal;if(reset)reset.onclick=resetFinal;
+    ['cr','ca','cc','iv','it','dd','dt'].forEach(id=>{const e=document.getElementById(id);if(e)e.addEventListener('input',calculateFinal)});
+    const rain=document.getElementById('rain');
+    function syncDash(){const v=Number(rain.value)||0;const state=v>=110?'CRITICAL':v>=80?'WARNING':v>=45?'CAUTION':'NORMAL';const dr=document.getElementById('dashRain'),ds=document.getElementById('dashState'),wf=document.getElementById('waterFill');if(dr)dr.textContent=v+' mm';if(ds)ds.textContent=state;if(wf)wf.style.height=Math.max(12,Math.min(92,12+v*.52))+'%'}
+    if(rain){rain.addEventListener('input',syncDash);syncDash()}
+    calculateFinal();
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',bind);else bind();
+})();
+</script>
+
+<style id="final-live-exhibition">
+/* FINAL LIVE-DEMO LAYER */
+.dash-live{box-shadow:0 0 0 1px #285044,0 0 30px #43b8e80d;position:relative}.dash-live:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(110deg,transparent 0%,transparent 44%,#a8dfb012 50%,transparent 56%,transparent 100%);background-size:240% 100%;animation:dashSweep 4.5s linear infinite}.dash-visual{height:180px}.rain-drops{position:absolute;inset:0;pointer-events:none}.rain-drops i{position:absolute;top:38px;width:2px;height:18px;border-radius:2px;background:#8bdcf5;animation:dashRainFall 1.05s linear infinite;opacity:.85}.sensor-ring{position:absolute;width:22px;height:22px;border:1px solid #75d9ff;border-radius:50%;opacity:0}.sr1{left:42%;top:67px}.sr2{left:60%;top:86px}.dash-visual.live-high .sensor-ring{animation:sensorRing 1.4s ease-out infinite}.data-packet{position:absolute;color:#a8dfb0;font-size:20px;text-shadow:0 0 12px #73e39a;z-index:3}.dp1{left:34%;bottom:25px;animation:packetTravel 2.8s linear infinite}.dp2{left:34%;bottom:25px;animation:packetTravel 2.8s linear infinite 1.4s}.water-level b{position:absolute;left:0;right:0;top:7px;text-align:center;font-size:9px;color:#e7f7f0;z-index:2;text-shadow:0 1px 3px #000}.dash-stage{position:absolute;left:10px;right:10px;top:8px;text-align:center;font-size:9px;letter-spacing:.1em;color:#d9eee7;opacity:.72}.dash-live.high .dash-visual{box-shadow:inset 0 0 35px #43b8e814}.dash-live.critical .dash-visual{box-shadow:inset 0 0 35px #df7b7b20}.calc-result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:10px}.calc-result-grid>div{padding:13px;border:1px solid #285044;border-radius:12px;background:linear-gradient(180deg,#102d24,#0b1c17);text-align:center}.calc-result-grid span{display:block;font-size:9px;letter-spacing:.12em;color:#9fb8ad}.calc-result-grid strong{display:block;margin-top:5px;font-size:20px;color:#a8dfb0}.calc-result-grid strong.value-pop{animation:valuePop .45s ease}.compare-table tbody tr{position:relative;transition:transform .35s ease,background .35s ease,box-shadow .35s ease}.compare-table tbody tr.live-row{background:#15372b;transform:translateX(5px);box-shadow:inset 3px 0 #73d9ff}.compare-table tbody tr.live-row td{color:#effaf5}.table-live-head{font-size:10px;letter-spacing:.12em;color:#8fdcc2;margin-top:12px}.scene.scan:after{content:"";position:absolute;left:0;right:0;height:3px;top:0;background:linear-gradient(90deg,transparent,#8cecff,transparent);box-shadow:0 0 14px #8cecff;animation:scanScene 1.1s ease-in-out 2;pointer-events:none}.scene.safe .depth-zone{animation:hazardPulse 1.2s ease-in-out infinite}.scene.safe .person{animation:safeStop .6s ease-out forwards}.scene.active .depth-zone{animation:hazardPulse .9s ease-in-out infinite}.scene.active .water{animation:waterRise 2.5s ease-in-out forwards}.danger-label{transition:.3s}.scene.safe .danger-label{animation:labelSafe .8s ease}.scenario-controls button{transition:transform .2s,box-shadow .2s}.scenario-controls button:active{transform:scale(.97)}
+@keyframes dashSweep{to{background-position:-240% 0}}@keyframes dashRainFall{to{transform:translateY(130px);opacity:0}}@keyframes sensorRing{0%{transform:scale(.5);opacity:.75}100%{transform:scale(2.6);opacity:0}}@keyframes packetTravel{0%{transform:translate(0,0);opacity:0}12%{opacity:1}45%{transform:translate(95px,-8px)}72%{transform:translate(190px,-5px)}100%{transform:translate(270px,0);opacity:0}}@keyframes valuePop{50%{transform:scale(1.08);filter:brightness(1.35)}}@keyframes scanScene{from{top:0;opacity:0}30%{opacity:1}to{top:100%;opacity:0}}@keyframes hazardPulse{50%{box-shadow:0 0 0 5px #e7c76b22,0 0 18px #e7c76b33}}@keyframes waterRise{50%{height:36%}}@keyframes labelSafe{50%{transform:scale(1.06)}}
+@media(max-width:760px){.calc-result-grid{grid-template-columns:1fr}.dash-visual{height:155px}.dash-stage{font-size:7px}}
+@media(prefers-reduced-motion:reduce){.dash-live:after,.rain-drops i,.sensor-ring,.data-packet,.scene.scan:after,.scene.active .water,.scene.safe .depth-zone{animation:none!important}}
+</style>
+<script id="final-live-engine">
+(function(){
+ const $=id=>document.getElementById(id);
+ const rain=$('rain'), live=$('.dash-live'), visual=document.querySelector('.dash-visual'), drops=$('dashDrops'), fill=$('waterFill'), level=$('dashLevel'), dashRain=$('dashRain'), dashState=$('dashState');
+ if(drops && !drops.children.length){for(let i=0;i<24;i++){const d=document.createElement('i');d.style.left=(8+Math.random()*84)+'%';d.style.animationDelay=(Math.random()*1.05)+'s';d.style.animationDuration=(.7+Math.random()*.7)+'s';drops.appendChild(d)}}
+ function dashboardLive(v){if(!live||!visual)return;const state=v>=110?'CRITICAL':v>=80?'WARNING':v>=45?'CAUTION':'NORMAL';const pct=Math.max(10,Math.min(92,12+v*.52));fill.style.height=pct+'%';level.textContent=Math.round(pct)+'%';dashRain.textContent=v+' mm';dashState.textContent=state;live.classList.remove('high','critical');if(v>=80)live.classList.add('high');if(v>=110)live.classList.add('critical');visual.classList.toggle('live-high',v>0);if(drops)drops.style.opacity=Math.max(.25,Math.min(1,v/60));}
+ if(rain){rain.addEventListener('input',()=>dashboardLive(Number(rain.value)||0));dashboardLive(Number(rain.value)||0)}
+ // Reliable single-source calculator engine; values update while typing and on Calculate.
+ const ids=['cr','ca','cc','iv','it','dd','dt']; const out=$('res');
+ function n(id){const e=$(id);if(!e)return NaN;const raw=e.value.trim();return raw===''?NaN:Number(raw)}
+ function calcFinal(){const r=n('cr'),a=n('ca'),c=n('cc'),iv=n('iv'),it=n('it'),dep=n('dd'),tm=n('dt');const fields=ids.map($);fields.forEach(e=>e&&e.classList.remove('invalid'));let bad=!Number.isFinite(r)||!Number.isFinite(a)||!Number.isFinite(c)||!Number.isFinite(iv)||!Number.isFinite(it)||!Number.isFinite(dep)||!Number.isFinite(tm)||[r,a,iv,it,dep,tm].some(v=>v<0)||c<0||c>1;if(bad){if(!Number.isFinite(c)||c<0||c>1)$( 'cc')?.classList.add('invalid');[r,a,iv,it,dep,tm].forEach((v,i)=>{if(!Number.isFinite(v)||v<0)$(ids[[0,1,3,4,5,6][i]])?.classList.add('invalid')});if(out)out.innerHTML='<b>Check the highlighted inputs.</b><br>Use numbers ≥ 0 and keep the runoff coefficient between 0 and 1.';return}
+ const runoff=r*a*c, infil=it===0?null:iv/it, rise=tm===0?null:dep/tm; if($('calcRunoff'))$('calcRunoff').textContent=runoff.toLocaleString(undefined,{maximumFractionDigits:2})+' L'; if($('calcInfil'))$('calcInfil').textContent=infil===null?'—':infil.toFixed(2)+' L/min'; if($('calcRise'))$('calcRise').textContent=rise===null?'—':rise.toFixed(2)+' cm/min'; if(out)out.innerHTML='<b>Estimated runoff volume:</b> '+runoff.toLocaleString(undefined,{maximumFractionDigits:2})+' L ('+(runoff/1000).toFixed(3)+' m³)<br><b>Infiltration rate:</b> '+(infil===null?'—':infil.toFixed(2)+' L/min')+'<br><b>Pond rate of rise:</b> '+(rise===null?'—':rise.toFixed(2)+' cm/min');document.querySelectorAll('.calc-result-grid strong').forEach(e=>{e.classList.remove('value-pop');void e.offsetWidth;e.classList.add('value-pop')})}
+ ids.forEach(id=>$(id)?.addEventListener('input',calcFinal)); $('calc-btn')?.addEventListener('click',calcFinal); $('calc-reset')?.addEventListener('click',()=>{[['cr',50],['ca',100],['cc',.6],['iv',120],['it',20],['dd',6],['dt',10]].forEach(([id,v])=>$(id).value=v);calcFinal()}); calcFinal();
+ // Sequential table scanner: gives the tables a data-dashboard feel without changing content.
+ document.querySelectorAll('.compare-table').forEach((table,ti)=>{let rows=[...table.querySelectorAll('tr')].slice(1);if(!rows.length)return;const head=document.createElement('div');head.className='table-live-head';head.innerHTML='<span class="live-led"></span> LIVE DATA REVIEW • ROW-BY-ROW';table.parentNode.insertBefore(head,table);let i=0;setInterval(()=>{rows.forEach(r=>r.classList.remove('live-row'));rows[i]?.classList.add('live-row');i=(i+1)%rows.length},1800+ti*250)});
+ // Make dashboard metrics feel like a monitored system.
+ ['runoff','infil','store','pond'].forEach(id=>{const e=$(id);if(e){new MutationObserver(()=>{e.classList.remove('metric-flash');void e.offsetWidth;e.classList.add('metric-flash')}).observe(e,{childList:true,characterData:true,subtree:true})}});
+})();
+</script>
+
+<script id="final-live-controller">
+(function(){
+  function ready(){
+    /* --- Authoritative calculator: one engine, all visible outputs --- */
+    const ids=['cr','ca','cc','iv','it','dd','dt'];
+    const els=Object.fromEntries(ids.map(id=>[id,document.getElementById(id)]));
+    const out=document.getElementById('res'), ro=document.getElementById('calcRunoff'), inf=document.getElementById('calcInfil'), rise=document.getElementById('calcRise');
+    function n(el){return el && el.value.trim()!=='' ? Number(el.value) : NaN}
+    function calcFinal(){
+      const r=n(els.cr), a=n(els.ca), c=n(els.cc), v=n(els.iv), t=n(els.it), d=n(els.dd), tm=n(els.dt);
+      const nums=[r,a,c,v,t,d,tm];
+      ids.forEach((id,i)=>{const bad=!Number.isFinite(nums[i])||nums[i]<0||(id==='cc'&&(nums[i]<0||nums[i]>1));els[id]?.classList.toggle('invalid',bad)});
+      const valid=nums.every(Number.isFinite)&&r>=0&&a>=0&&v>=0&&t>=0&&d>=0&&tm>=0&&c>=0&&c<=1;
+      if(!valid){
+        if(out)out.innerHTML='<b>Check the highlighted inputs.</b><br>Use non-negative numbers and keep the runoff coefficient between 0 and 1.';
+        if(ro)ro.textContent='—'; if(inf)inf.textContent='—'; if(rise)rise.textContent='—'; return;
+      }
+      const runoff=r*a*c, infil=t>0?v/t:null, pr=tm>0?d/tm:null;
+      if(ro)ro.textContent=runoff.toLocaleString(undefined,{maximumFractionDigits:2})+' L';
+      if(inf)inf.textContent=infil===null?'—':infil.toFixed(2)+' L/min';
+      if(rise)rise.textContent=pr===null?'—':pr.toFixed(2)+' cm/min';
+      if(out)out.innerHTML='<b>Estimated runoff volume:</b> '+runoff.toLocaleString(undefined,{maximumFractionDigits:2})+' L ('+(runoff/1000).toFixed(3)+' m³)<br><b>Infiltration rate:</b> '+(infil===null?'—':infil.toFixed(2)+' L/min')+'<br><b>Pond rate of rise:</b> '+(pr===null?'—':pr.toFixed(2)+' cm/min');
+      [out,ro,inf,rise].forEach(el=>{if(el){el.classList.remove('updated','live-update');void el.offsetWidth;el.classList.add('updated','live-update')}});
+    }
+    ids.forEach(id=>els[id]?.addEventListener('input',calcFinal));
+    document.getElementById('calc-btn')?.addEventListener('click',calcFinal);
+    document.getElementById('calc-reset')?.addEventListener('click',()=>{[['cr',50],['ca',100],['cc',.60],['iv',120],['it',20],['dd',6],['dt',10]].forEach(([id,v])=>{if(els[id])els[id].value=v});calcFinal()});
+    calcFinal();
+
+    /* --- Safety: real-life visual sequence, non-graphic --- */
+    window.runPond=function(safeMode){
+      const scene=document.getElementById('pondScene'),p=document.getElementById('pondPerson'),read=document.getElementById('depthReadout'),warn=document.getElementById('pondWarning'),text=document.getElementById('pondText');
+      if(!scene||!p)return;
+      p.className='person'; scene.classList.remove('active','safe','scan');
+      read.textContent='DEPTH: UNKNOWN'; warn.textContent='⚠ STOP • DEPTH UNKNOWN';
+      if(safeMode){scene.classList.add('safe','scan');read.textContent='DEPTH: 1.02 m • SENSOR VERIFIED';warn.textContent='🛡️ WARNING ACTIVE • ENTRY BLOCKED';text.textContent='Sensor scan → depth verified → hazard highlighted → barrier/warning activates. The person stops and takes the safer route.';return}
+      scene.classList.add('active');
+      text.textContent='Live scenario: the person approaches the water edge. The hidden depth is not visible, the footing becomes unsafe, and the person slips into the shallow edge area. No injury is shown.';
+      p.classList.add('walk');
+      setTimeout(()=>{p.classList.remove('walk');void p.offsetWidth;p.classList.add('fall');read.textContent='DEPTH: UNKNOWN • HAZARD';warn.textContent='⚠ HAZARD • UNSAFE EDGE';scene.classList.add('scan')},2900);
+      setTimeout(()=>{text.textContent='Result: unsafe entry detected. The system demonstrates why depth sensing and early warnings matter.'},4200);
+    };
+    window.runRoad=function(safeMode){
+      const scene=document.getElementById('roadScene'),p=document.getElementById('roadPerson'),text=document.getElementById('roadText');if(!scene||!p)return;
+      p.className='person road-person';scene.classList.remove('safe','scan');
+      if(safeMode){scene.classList.add('safe','scan');text.textContent='Water-level trend detected → route marked unsafe → person is redirected before entering the flooded section.';return}
+      scene.classList.add('active');p.classList.add('approach');text.textContent='Live scenario: the person approaches standing water, loses stable footing and slips sideways. No injury is shown.';
+      setTimeout(()=>{p.classList.remove('approach');void p.offsetWidth;p.classList.add('fall');scene.classList.add('scan')},1700);
+      setTimeout(()=>{text.textContent='Result: the road condition creates a visible hazard; smart warning can redirect people before the flooded section.'},3300);
+    };
+    window.runDrain=function(safeMode){
+      const scene=document.getElementById('drainScene'),p=document.getElementById('drainPerson'),text=document.getElementById('drainText');if(!scene||!p)return;
+      p.className='person drain-person';scene.classList.remove('safe','scan');
+      if(safeMode){scene.classList.add('safe','scan');text.textContent='Mapped drain detected → warning layer highlights the opening → person is redirected before reaching the hazard.';return}
+      scene.classList.add('active');p.classList.add('approach');text.textContent='Live scenario: the drainage opening is difficult to judge under water. The person approaches and slips at the edge; no injury is shown.';
+      setTimeout(()=>{p.classList.remove('approach');void p.offsetWidth;p.classList.add('fall');scene.classList.add('scan')},1550);
+      setTimeout(()=>{text.textContent='Result: hidden drainage hazards are easier to manage when mapped and detected early.'},3150);
+    };
+
+    /* --- Whole-page lower-section animation --- */
+    const candidates=[...document.querySelectorAll('section,.research-grid>div,.mini-flow span,.compare-table tbody tr,.safety-card,.chat-wide,.notice,.safety-banner')];
+    candidates.forEach((el,i)=>{el.classList.add('live-section');el.style.setProperty('--stagger',(i%9)*55+'ms')});
+    if('IntersectionObserver' in window){
+      const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in-view');io.unobserve(e.target)}}),{threshold:.08});
+      candidates.forEach(e=>io.observe(e));
+    }else candidates.forEach(e=>e.classList.add('in-view'));
+
+    /* Repeatable cinematic table scan */
+    document.querySelectorAll('table').forEach((table,ti)=>{
+      const rows=[...table.querySelectorAll('tbody tr')];if(!rows.length)return;
+      rows.forEach(r=>r.classList.remove('live-row'));
+      let i=0;setInterval(()=>{rows.forEach(r=>r.classList.remove('live-row'));rows[i]?.classList.add('live-row');i=(i+1)%rows.length},1700+ti*220);
+    });
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',ready);else ready();
+})();
+</script>
+<script id="ultra-live-engine">
+(function(){
+ const chart=document.getElementById('chart');
+ function drawLiveChart(r){
+  if(!chart)return; const x=chart.getContext('2d'), d=window.devicePixelRatio||1, rect=chart.getBoundingClientRect();
+  const W=Math.max(640,Math.round(rect.width*d)),H=Math.round(Math.min(420,Math.max(300,rect.width*.34))*d); chart.width=W;chart.height=H;
+  const w=W/d,h=H/d;x.setTransform(d,0,0,d,0,0);x.clearRect(0,0,w,h);
+  const grad=x.createLinearGradient(0,0,0,h);grad.addColorStop(0,'#ffffff');grad.addColorStop(1,'#eef9fc');x.fillStyle=grad;x.fillRect(0,0,w,h);
+  x.fillStyle='#12364b';x.font='800 18px Arial';x.fillText('Conventional vs Sponge City — live water pathway',24,30);
+  x.fillStyle='#5d7380';x.font='12px Arial';x.fillText('Illustrative simulation • changes with rainfall',24,49);
+  const labs=[['Runoff','↗'],['Infiltration','↓'],['Storage','▣'],['Detention','◌']];
+  const conventional=[r*.78,r*.08,r*.06,r*.08], sponge=[r*.38,r*.30,r*.18,r*.14];
+  const max=Math.max(...conventional,...sponge,1), left=155, right=28, top=82, row=(h-112)/4, barW=w-left-right;
+  x.strokeStyle='#d8e9ef';x.lineWidth=1;
+  for(let i=0;i<=4;i++){let yy=top+i*row;x.beginPath();x.moveTo(left,yy);x.lineTo(w-right,yy);x.stroke()}
+  labs.forEach((it,i)=>{let y=top+i*row+18, a=conventional[i]/max*barW,b=sponge[i]/max*barW;
+    x.fillStyle='#12364b';x.font='800 13px Arial';x.fillText(it[1]+'  '+it[0],24,y+5);
+    x.fillStyle='#edf2f4';x.roundRect(left,y-20,barW,15,8);x.fill();
+    x.fillStyle='#7d8d98';x.roundRect(left,y-20,Math.max(10,a),15,8);x.fill();
+    x.fillStyle='#e4f7fb';x.roundRect(left,y+5,barW,15,8);x.fill();
+    x.fillStyle='#159ac4';x.roundRect(left,y+5,Math.max(10,b),15,8);x.fill();
+    x.fillStyle='#365463';x.font='700 11px Arial';x.fillText('CONVENTIONAL '+Math.round(conventional[i])+' mm',Math.min(left+a+8,w-130),y-8);
+    x.fillStyle='#087b9c';x.fillText('SPONGE '+Math.round(sponge[i])+' mm',Math.min(left+b+8,w-115),y+17);
+  });
+  x.fillStyle='#159ac4';x.beginPath();x.arc(28,h-27,5,0,Math.PI*2);x.fill();x.fillStyle='#365463';x.font='700 11px Arial';x.fillText('Live simulation',42,h-23);
+ }
+ window.drawLiveChart=drawLiveChart;
+ function addScenes(){
+  const wrap=document.querySelector('#before-after .wrap'); if(!wrap||wrap.querySelector('.live-scenes'))return;
+  const box=document.createElement('div');box.className='live-scenes';
+  const scenes=[
+   ['LIVE RAINFALL','Rainfall enters the city','rain'],['RUNOFF PATH','Conventional: water moves quickly','runoff'],['SPONGE PATH','Capture → infiltrate → store','sponge'],['SMART MONITORING','Sensors → data → decision','sensor']
+  ];
+  box.innerHTML=scenes.map((a,i)=>`<div class="live-scene"><span class="label">● ${a[0]}</span><div class="sky"></div><div class="ground"></div><div class="road"></div><div class="scene-caption">${a[1]}</div>${i===0?Array.from({length:18},(_,j)=>`<i class="rain-drop" style="left:${5+j*5}%;animation-duration:${.55+(j%5)*.12}s;animation-delay:-${j*.09}s"></i>`).join(''):''}${i===1?'<div class="water-flow" style="left:8%;bottom:27%"></div><div class="water-flow" style="left:-30%;bottom:18%;animation-delay:-.7s"></div>':''}${i===2?'<div class="water-flow" style="left:5%;bottom:27%;width:75px;animation-duration:2.7s"></div><div class="sensor" style="left:62%;bottom:31%"></div>':''}${i===3?'<div class="sensor" style="left:31%;bottom:31%"></div><div class="sensor" style="left:70%;bottom:29%;animation-delay:.5s"></div><div class="packet" style="left:36%;bottom:34%"></div><div class="packet" style="left:52%;bottom:32%;animation-delay:.8s"></div>':''}</div>`).join('');
+  wrap.appendChild(box);
+ }
+ function start(){addScenes(); if(window.rain){drawLiveChart(Number(window.rain.value||50));window.addEventListener('resize',()=>drawLiveChart(Number(window.rain.value||50)));}
+  if(window.rain)window.rain.addEventListener('input',()=>drawLiveChart(Number(window.rain.value||50)));
+  document.querySelectorAll('.card,.panel,.metric,.info-card,.research-grid>div').forEach((el,i)=>{el.style.animationDelay=(i%8)*.08+'s'});
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
+})();
+</script>
+</body></html>
